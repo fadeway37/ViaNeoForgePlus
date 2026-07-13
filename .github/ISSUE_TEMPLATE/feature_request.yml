@@ -1,12 +1,12 @@
 name: Feature Request
-description: Suggest a feature for ViaFabricPlus
+description: Suggest a feature for ViaNeoForgePlus
 labels: [ S-needs-triage, T-feature ]
 
 body:
   - type: markdown
     attributes:
       value: |
-        **Before requesting a new feature, please check whether the latest build from https://github.com/ViaVersion/ViaFabricPlus/actions already includes a solution.**
+        **Before requesting a new feature, please check whether the latest build from https://github.com/fadeway37/ViaNeoForgePlus/actions already includes a solution.**
 
         You can upload screenshots or videos in any text field when relevant.
 
