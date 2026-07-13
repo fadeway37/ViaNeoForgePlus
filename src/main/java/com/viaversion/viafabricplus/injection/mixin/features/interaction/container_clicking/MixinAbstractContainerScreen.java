@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.interaction.container_clicking;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.client.KeyMapping;
@@ -68,9 +69,9 @@ public abstract class MixinAbstractContainerScreen extends Screen {
         return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_4_2);
     }
 
-    @Redirect(method = "checkHotbarKeyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/KeyMapping;matches(Lnet/minecraft/client/input/KeyEvent;)Z", ordinal = 1))
-    private boolean disableHotbarKeys(final KeyMapping instance, final KeyEvent event) {
-        return instance.matches(event) && ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_4_2);
+    @Redirect(method = "checkHotbarKeyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/KeyMapping;isActiveAndMatches(Lcom/mojang/blaze3d/platform/InputConstants$Key;)Z", ordinal = 1))
+    private boolean disableHotbarKeys(final KeyMapping instance, final InputConstants.Key key) {
+        return instance.isActiveAndMatches(key) && ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_4_2);
     }
 
 }

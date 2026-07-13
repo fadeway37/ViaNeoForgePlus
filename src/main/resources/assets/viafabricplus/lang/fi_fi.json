@@ -33,7 +33,7 @@
   "classicube.viafabricplus.loading": "Ladataan profiilin tietoja ja palvelinlistaa...",
   "classicube.viafabricplus.warning": "Tämä ominaisuus lähettää API-pyyntöjä ClassiCube API:hin.",
   "betacraft.viafabricplus.warning": "Tämän napin painaminen lähettää API-pyyntöjä \"betacraft.uk/serverlist\":iin.",
-  "classic4j_library.viafabricplus.error.token": "Väärä tokeni. Onko sinun ViaFabricPlus vanhentunut?",
+  "classic4j_library.viafabricplus.error.token": "Väärä tokeni. Onko sinun ViaNeoForgePlus vanhentunut?",
   "classic4j_library.viafabricplus.error.username": "Väärä käyttäjänimi.",
   "classic4j_library.viafabricplus.error.password": "Väärä salasana.",
   "classic4j_library.viafabricplus.error.verification": "Käyttäjä ei ole vielä vahvistanut sähköpostiaan.",

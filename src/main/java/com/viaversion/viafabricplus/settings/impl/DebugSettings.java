@@ -36,7 +36,6 @@ public final class DebugSettings extends SettingGroup {
 
     public final BooleanSetting queueConfigPackets = new BooleanSetting(this, Component.translatable("debug_settings.viafabricplus.queue_config_packets"), true);
     public final BooleanSetting printNetworkingErrorsToLogs = new BooleanSetting(this, Component.translatable("debug_settings.viafabricplus.print_networking_errors_to_logs"), true);
-    public final BooleanSetting ignoreFabricSyncErrors = new BooleanSetting(this, Component.translatable("debug_settings.viafabricplus.ignore_fabric_sync_errors"), false);
     public final BooleanSetting hideModernJigsawScreenFeatures = new BooleanSetting(this, Component.translatable("debug_settings.viafabricplus.hide_modern_jigsaw_screen_features"), true);
     public final BooleanSetting filterNonExistingGlyphs = new BooleanSetting(this, Component.translatable("debug_settings.viafabricplus.filter_non_existing_glyphs"), true) {
         @Override

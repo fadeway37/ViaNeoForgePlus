@@ -1,121 +1,43 @@
 # Usage Guide
 
-## Getting Started
+## Opening ViaNeoForgePlus
 
-When you open the **Multiplayer** screen, you'll notice a new **ViaFabricPlus button** in the top right corner.
-Clicking it opens the mod's main menu, where you can:
+On the Multiplayer or Direct Connection screen, select **ViaNeoForgePlus**. The protocol screen lets you choose a
+global target version, open settings, and access supported server lists. You can also open Settings from NeoForge's
+mod list.
 
-- Adjust general settings
-- Choose which protocol version to use
-
-You can also move this button's position via:
-**Settings → General → Multiplayer screen button orientation**
-
-![](preview/multiplayer.png)
-![](preview/protocol_selection.png)
-
-### Per-Server Version Selection
-
-On the **Add/Edit Server** screen, you'll see a ViaFabricPlus button.
-Here you can pick a specific version just for that server:
-
-- When you **ping** or **join**, ViaFabricPlus will automatically use the chosen version.
-- Your choice is saved in `servers.dat` (just like normal server info).
-
-If you want to reset, simply press the button again and select **"Cancel and reset"**.
-
-![](preview/set_version_for_server.png)
-
----
+On the Add/Edit Server screen, the version button selects a protocol for that server only. The selection is stored in
+`servers.dat`. Selecting the reset option returns the server to automatic/global selection.
 
 ## Commands
 
-ViaFabricPlus supports all normal **ViaVersion commands** under `/viafabricplus` or `/viaversion`.
-Additionally, it adds some **classic-specific commands**:
+ViaVersion commands are exposed under `/vianeoforgeplus`. `/viafabricplus` remains an alias for scripts and users of
+the upstream mod. Important subcommands include:
 
-- **/viafabricplus settime <time>** – Sets the client-side world time (available in **c0.28–c0.30**)
-- **/viafabricplus listextensions** – Lists all Classic Protocol Extensions (**c0.30 CPE**)
+- `/vianeoforgeplus settings`
+- `/vianeoforgeplus settime <time>` for Classic protocols that support client-side time changes
+- `/vianeoforgeplus listextensions` for Classic Protocol Extension information
 
----
+## Configuration
 
-## Settings
+ViaNeoForgePlus stores its own files under `config/vianeoforgeplus/`, including `settings.json` and `accounts.json`.
+The embedded translators also create their normal files there, such as `viaversion.yml`, `viabackwards.yml`,
+`vialegacy.yml`, `viaaprilfools.yml`, and `viabedrock.yml`.
 
-For most players, only these tabs matter:
+The Debug settings are intended for diagnostics. Defaults are recommended unless you are investigating a specific
+protocol issue.
 
-- **General**
-- **Bedrock**
-- **Authentication**
-- **Visual**
+## Bedrock Edition
 
-⚠️ The **Debug** tab is for developers only – don't touch it unless you know what you're doing.
+Bedrock support is experimental. Configure a Microsoft/Bedrock account from Authentication settings before joining
+online-mode Bedrock servers or opening Bedrock Realms. Some Bedrock features may remain incomplete in ViaBedrock.
 
-![](preview/settings_selection.png)
+## ClassiCube and BetaCraft
 
-Settings are saved in:
+The Server Lists screen exposes the supported ClassiCube and BetaCraft lists. ClassiCube authentication, including its
+multi-factor prompt, is available from the same UI.
 
-- `settings.json` (general settings)
-- `accounts.json` (Bedrock/ClassiCube login info)
+## Scope
 
----
-
-## Config Files
-
-Advanced users can tweak the protocol translation libraries.
-Configs are stored in the `config` folder and may include:
-
-- `viaversion.yml` – core ViaVersion
-- `viabackwards.yml` – backward compatibility
-- `vialegacy.yml` – legacy versions
-- `viabedrock.yml` – Bedrock support
-- `viaaprilfools.yml` – April Fools versions
-
-On first launch, all files are created with safe default values.
-If you're not sure what a setting does, **don't change it**.
-
----
-
-## Debug HUD
-
-ViaFabricPlus includes a Debug HUD that can be toggled in settings.
-It shows useful connection and protocol info while playing.
-
-![](preview/debug_hud.png)
-
----
-
-## Bedrock Edition Support
-
-ViaFabricPlus also lets you connect to **Bedrock servers** – but keep in mind:
-
-- Support is still **alpha**
-- Many features are incomplete or may not work correctly
-
-To log into a Bedrock account:
-
-- Go to Settings and click **“Click to set account for Bedrock edition”**
-
-### Bedrock Realms
-
-If you have a Bedrock account linked, you'll see your **Bedrock Realms** listed in the **Server Lists** menu (bottom
-left of the main GUI).
-
-![](preview/bedrock_realms.png)
-
----
-
-## ClassiCube & BetaCraft
-
-ViaFabricPlus integrates with **ClassiCube** and **BetaCraft** server lists, accessible from the main GUI via the **Server Lists** button.
-
-### BetaCraft
-
-![](preview/betacraft_servers.png)
-
-### ClassiCube
-
-To join ClassiCube servers, you'll need a ClassiCube account (sign up at [classicube.net](https://www.classicube.net/)).
-
-- If MultiFactor authentication is required, ViaFabricPlus will open a dedicated login window.
-
-![](preview/classicube_servers.png)
-![](preview/classicube_login.png)
+ViaNeoForgePlus is client-side and primarily affects multiplayer connections. It does not need to be installed on the
+server and does not convert old resource packs.

@@ -82,7 +82,7 @@ public abstract class MixinEntity {
         return instance.horizontalCollision || (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1) && this.verticalCollision);
     }
 
-    @Redirect(method = "restituteMovementAfterCollisions", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Entity;verticalCollisionBelow:Z", opcode = Opcodes.GETFIELD))
+    @Redirect(method = "restituteMovementAfterCollisions(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;ZZLnet/minecraft/world/phys/Vec3;)V", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Entity;verticalCollisionBelow:Z", opcode = Opcodes.GETFIELD))
     private boolean fixBelowCollisionCheck(Entity instance) {
         return instance.verticalCollisionBelow || ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1);
     }
@@ -90,7 +90,7 @@ public abstract class MixinEntity {
     @Definition(id = "y", field = "Lnet/minecraft/world/phys/Vec3;y:D")
     @Definition(id = "currentMovement", local = @Local(type = Vec3.class, name = "currentMovement"))
     @Expression("-currentMovement.y < ?")
-    @ModifyExpressionValue(method = "restituteMovementAfterCollisions", at = @At("MIXINEXTRAS:EXPRESSION"))
+    @ModifyExpressionValue(method = "restituteMovementAfterCollisions(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;ZZLnet/minecraft/world/phys/Vec3;)V", at = @At("MIXINEXTRAS:EXPRESSION"))
     private boolean fixGravityCheck(boolean original, @Local(name = "currentMovement") Vec3 currentMovement) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
             return !(currentMovement.y < 0.0);
@@ -99,7 +99,7 @@ public abstract class MixinEntity {
         }
     }
 
-    @Redirect(method = "restituteMovementAfterCollisions", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;with(Lnet/minecraft/core/Direction$Axis;D)Lnet/minecraft/world/phys/Vec3;", ordinal = 2))
+    @Redirect(method = "restituteMovementAfterCollisions(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;ZZLnet/minecraft/world/phys/Vec3;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;with(Lnet/minecraft/core/Direction$Axis;D)Lnet/minecraft/world/phys/Vec3;", ordinal = 2))
     private Vec3 fixRestitution(Vec3 instance, Direction.Axis axis, double value, @Local(name = "restitution") double restitution) {
         return instance.with(axis, ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1) ? -this.getDeltaMovement().y * restitution : value);
     }

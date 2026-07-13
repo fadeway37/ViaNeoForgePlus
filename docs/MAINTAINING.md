@@ -1,180 +1,36 @@
-# Updating Instructions
+# Maintaining ViaNeoForgePlus
 
-These are the usual steps for updating **ViaFabricPlus** to a new Minecraft version.
-If you're unsure about anything, feel free to ask in the [ViaVersion Discord](https://discord.gg/viaversion).
+## Updating Minecraft or NeoForge
 
----
+Update `minecraft_version`, `neoforge_version`, and `project_jvm_version` in `gradle.properties`, then update the
+ModDevGradle plugin version if required. Keep the exact ViaVersion-family build identifiers pinned until the complete
+client reaches the main menu and protocol mappings finish loading.
 
-## 1. Update Dependencies
+Run:
 
-Update all upstream versions in `gradle.properties`. The main ones are:
-
-- `minecraft_version`
-- `fabric_loader_version`
-- `fabric_api_version`
-- `supported_minecraft_versions` (if needed)
-
-Also update versions in the `dependencies` block of `build.gradle.kts`.
-
----
-
-## 2. Update Core References
-
-- Update the `NATIVE_VERSION` field in `ProtocolTranslator`
-- Update protocol constants in `ViaFabricPlusProtocol`
-
----
-
-## 3. Port the Code
-
-1. Decompile the Minecraft source with your preferred tool.
-2. Try to compile the mod and port the code until all fixes work again.
-
----
-
-## 4. Update Data Diffs
-
-Set `updating_minecraft = true`.
-
-Run `gradle test` to automatically update various data JSONs in the assets.
-
-Manually check the following files:
-- `entity-dimensions.json`
-
-Set `updating_minecraft = false`.
-
----
-
-## 5. Validate Mixins
-
-Check if all mixins in the `injection` package still apply correctly.
-Critical ones include:
-
-- `MixinClientLevel#tickEntity`
-- `MixinClientLevel#tickPassenger`
-- `MixinPlayer#changeSpeedCalculation`
-
----
-
-## 6. Diff Game Code
-
-Diff the new Minecraft source against the previous version (e.g. using `git`).
-Implement all relevant changes for ViaFabricPlus. These usually include:
-
-- **Logic changes** (e.g. `if (a && b)` → `if (b || a)`)
-- **Movement changes** (e.g. `player.yaw` → `player.headYaw`)
-- **Networking changes** (e.g. new packet or changed structure)
-- **Visual changes** (e.g. animations)
-
-Note: ViaVersion already covers most server-side gameplay changes.
-ViaFabricPlus usually handles **client-side and deeper integration fixes**.
-
-See [Contributing Guidelines](../CONTRIBUTING.md#Adding-Protocol-Fixes) for details on which fixes matter.
-
----
-
-## 7. Focus Areas in Game Code
-
-**Usually important (mojang mappings):**
-
-- `net.minecraft`
-- `net.minecraft.client`
-    - `gui`
-    - `multiplayer`
-    - `player`
-- `net.minecraft.util`
-- `net.minecraft.world`
-    - `entity`
-    - `inventory`
-    - `item`
-    - `level` (including `block`)
-
-**Usually safe to skip:**
-
-- `com.mojang`
-- `net.minecraft.advancements`
-- `net.minecraft.commands`
-- `net.minecraft.data`
-- `net.minecraft.gametest`
-- `net.minecraft.realms`
-- `net.minecraft.recipebook`
-- `net.minecraft.references`
-- `net.minecraft.resources`
-- `net.minecraft.server`
-- `net.minecraft.sounds`
-- `net.minecraft.stats`
-- `net.minecraft.tags`
-
----
-
-## 8. Verify Upstream
-
-Check the ViaVersion/upstream protocol implementation.
-
-- Report upstream issues when needed
-- If an issue can't be fixed upstream without excessive work, add a client-side workaround in ViaFabricPlus
-
----
-
-## 9. Final Steps
-
-1. Run the game and verify **all GUIs and visuals**.
-2. Clean up your code and ensure it's readable.
-
-    * Client-side fixes are sorted by protocol version, newest at the top.
-3. Open a pull request and wait for review.
-
----
-
-# Project Structure
-
-- Every change to the game is called a **feature**.
-- Features live under both `features/` and `injection/mixin/features/`.
-- Loading is handled by static blocks and a dummy `init` function in `FeaturesLoading`.
-
----
-
-# Build Files
-
-- Common build logic comes from the [BaseProject Gradle convention plugin](https://github.com/florianreuth/BaseProject).
-- The root project includes all submodules (including optional ones like `viafabricplus-visuals`).
-- Be careful not to introduce unintended dependencies on optional submodules.
-
----
-
-# Release Process
-
-1. Set `project_version` in `gradle.properties` to the new release version.
-2. Pin version IDs of `configureVVDependencies` in `build.gradle.kts`.
-3. Commit with the message:
-
-   ```
-   ViaFabricPlus <version>
-   ```
-
-## Versioning Scheme
-
-- **Major** → Breaking or fundamental refactors (e.g. new mappings, full rewrite)
-- **Minor** → Port to a new game version or major feature addition
-- **Patch** → Bug fixes or small features
-
-After releasing:
-
-- Switch back to `-SNAPSHOT` version
-- Unpin `configureVVDependencies`
-
-Make a version bump commit:
-
-```
-Start <release version> cycle
+```powershell
+.\gradlew.bat clean compileJava
+.\gradlew.bat runClient
+.\gradlew.bat build
 ```
 
----
+## Port checks
 
-# Git Branches
+- Resolve every failed required Mixin against the patched NeoForge Minecraft method descriptors.
+- Re-check NeoForge hooks used for client ticks, commands, payload registration, particles, and the mod-list config
+  screen.
+- Keep `META-INF/accesstransformer.cfg` synchronized with access needs; prefer a Mixin invoker when a broad public
+  method transform is unnecessary.
+- Protocol libraries targeted by Mixins must remain merged into the main transforming mod output. Do not move them
+  back to ordinary Jar-in-Jar `LIBRARY` entries.
+- Verify ViaBedrock resource/skin packs load without mapping errors in both the development folder module and the final
+  JAR.
+- Inspect the final archive for NeoForge metadata and confirm it contains no `fabric.mod.json` or access widener.
 
-- `ver/<version>` → all new changes are merged into the branch of the currently active Minecraft version
-- Keep one branch per Minecraft version (e.g. `ver/1.21.5`)
+## Release verification
 
+Start a clean NeoForge 26.2 instance containing only the produced ViaNeoForgePlus JAR. Confirm the main menu loads,
+the mod-list settings button opens, protocol mappings finish, the native WebRTC resource for the current platform is
+present, and no missing-class or Mixin errors appear in `latest.log`.
 
-See [ViaFabricPlus-archive](https://github.com/florianreuth/ViaFabricPlus-archive) for older branches.
+Retain legacy package/resource identifiers unless a deliberate breaking API migration is planned.

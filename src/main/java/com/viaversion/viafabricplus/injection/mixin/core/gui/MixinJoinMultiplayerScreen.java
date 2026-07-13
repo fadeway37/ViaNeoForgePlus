@@ -52,7 +52,7 @@ public abstract class MixinJoinMultiplayerScreen extends Screen {
 
         if (viaFabricPlus$button == null) {
             viaFabricPlus$button = Button
-                .builder(Component.nullToEmpty("ViaFabricPlus"), button -> ProtocolSelectionScreen.INSTANCE.open(this))
+                .builder(Component.nullToEmpty("ViaNeoForgePlus"), button -> ProtocolSelectionScreen.INSTANCE.open(this))
                 .size(98, 20)
                 .build();
             this.addRenderableWidget(viaFabricPlus$button);

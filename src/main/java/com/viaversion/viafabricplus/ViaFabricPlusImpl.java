@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus;
 
 import com.viaversion.viafabricplus.api.ViaFabricPlusBase;
-import com.viaversion.viafabricplus.api.entrypoint.ViaFabricPlusLoadEntrypoint;
 import com.viaversion.viafabricplus.api.events.ChangeProtocolVersionCallback;
 import com.viaversion.viafabricplus.api.events.LoadingCycleCallback;
 import com.viaversion.viafabricplus.api.settings.SettingGroup;
@@ -38,6 +37,7 @@ import com.viaversion.viafabricplus.save.SaveManager;
 import com.viaversion.viafabricplus.screen.impl.ProtocolSelectionScreen;
 import com.viaversion.viafabricplus.screen.impl.SettingsScreen;
 import com.viaversion.viafabricplus.settings.SettingsManager;
+import com.viaversion.viafabricplus.util.ArrayBackedEvent;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viafabricplus.util.ClassLoaderPriorityUtil;
 import com.viaversion.viafabricplus.util.network.SyncTasks;
@@ -51,11 +51,6 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.entrypoint.EntrypointContainer;
-import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.core.Holder;
@@ -65,21 +60,21 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.entity.BannerPattern;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.loading.FMLPaths;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
-import static com.viaversion.viafabricplus.api.entrypoint.ViaFabricPlusLoadEntrypoint.KEY;
-
 public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
 
-    public static final Event<LoadingCycleCallback> LOADING_CYCLE = EventFactory.createArrayBacked(LoadingCycleCallback.class, listeners -> state -> {
+    public static final ArrayBackedEvent<LoadingCycleCallback> LOADING_CYCLE = new ArrayBackedEvent<>(listeners -> state -> {
         for (final LoadingCycleCallback listener : listeners) {
             listener.onLoadCycle(state);
         }
     });
 
-    public static final Event<ChangeProtocolVersionCallback> CHANGE_PROTOCOL_VERSION = EventFactory.createArrayBacked(ChangeProtocolVersionCallback.class, listeners -> (oldVersion, newVersion) -> {
+    public static final ArrayBackedEvent<ChangeProtocolVersionCallback> CHANGE_PROTOCOL_VERSION = new ArrayBackedEvent<>(listeners -> (oldVersion, newVersion) -> {
         for (final ChangeProtocolVersionCallback listener : listeners) {
             listener.onChangeProtocolVersion(oldVersion, newVersion);
         }
@@ -87,8 +82,8 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
 
     public static final ViaFabricPlusImpl INSTANCE = new ViaFabricPlusImpl();
 
-    private final Logger logger = LogManager.getLogger("ViaFabricPlus");
-    private final Path path = FabricLoader.getInstance().getConfigDir().resolve("viafabricplus");
+    private final Logger logger = LogManager.getLogger("ViaNeoForgePlus");
+    private final Path path = FMLPaths.CONFIGDIR.get().resolve("vianeoforgeplus");
 
     private String version;
     private String implVersion;
@@ -97,18 +92,20 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusBase {
     public void init() {
         ViaFabricPlus.init(INSTANCE);
 
-        final ModMetadata metadata = FabricLoader.getInstance().getModContainer("viafabricplus").get().getMetadata();
-        version = metadata.getVersion().getFriendlyString();
-        implVersion = metadata.getCustomValue("vfp:implVersion").getAsString();
-
-        for (final EntrypointContainer<ViaFabricPlusLoadEntrypoint> container : FabricLoader.getInstance().getEntrypointContainers(KEY, ViaFabricPlusLoadEntrypoint.class)) {
-            container.getEntrypoint().onPlatformLoad(INSTANCE);
+        version = ModList.get().getModContainerById("vianeoforgeplus")
+            .orElseThrow(() -> new IllegalStateException("ViaNeoForgePlus mod container is missing"))
+            .getModInfo().getVersion().toString();
+        implVersion = ViaFabricPlusImpl.class.getPackage().getImplementationVersion();
+        if (implVersion == null) {
+            implVersion = version;
         }
+
+        com.viaversion.viafabricplus.visuals.ViaFabricPlusVisuals.INSTANCE.onPlatformLoad(INSTANCE);
 
         try {
             Files.createDirectories(path);
         } catch (final IOException e) {
-            logger.error("Failed to create ViaFabricPlus directory", e);
+            logger.error("Failed to create ViaNeoForgePlus directory", e);
         }
 
         ClassLoaderPriorityUtil.loadOverridingJars(path, logger);

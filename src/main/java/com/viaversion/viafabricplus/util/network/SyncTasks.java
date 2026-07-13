@@ -42,7 +42,6 @@ public final class SyncTasks {
     public static final String PACKET_SYNC_IDENTIFIER = UUID.randomUUID() + ":" + UUID.randomUUID();
 
     public static void init() {
-        DataCustomPayload.init();
     }
 
     /**

@@ -1,5 +1,4 @@
 {
-  "modmenu.descriptionTranslation.viafabricplus": "(ʞɔoɹpǝ𐐒 'sןooℲ ןᴉɹd∀ 'ǝsɐǝןǝᴚ 'ɐʇǝ𐐒 'ɐɥdן∀ 'ɔᴉssɐןƆ) uoᴉsɹǝʌ ɹǝʌɹǝs ʇɟɐɹɔǝuᴉW ⅄ᴚƎΛƎ uᴉoɾ oʇ noʎ sʍoןןɐ ɥɔᴉɥʍ poɯ ɔᴉɹqɐℲ ʇɟɐɹɔǝuᴉW",
   "base.viafabricplus.settings": "sƃuᴉʇʇǝS",
   "base.viafabricplus.on": "uO",
   "base.viafabricplus.off": "ɟɟO",
@@ -65,7 +64,6 @@
   "debug_settings.viafabricplus.always_tick_client_player": "ɹǝʎɐןd ʇuǝᴉןɔ ʞɔᴉʇ sʎɐʍן∀",
   "debug_settings.viafabricplus.print_networking_errors_to_logs": "sƃoן oʇ sɹoɹɹǝ ƃuᴉʞɹoʍʇǝu ʇuᴉɹԀ",
   "debug_settings.viafabricplus.dont_create_packet_error_crash_reports": "sʇɹodǝɹ ɥsɐɹɔ ɹoɹɹǝ ʇǝʞɔɐd ǝʇɐǝɹɔ ʇ,uo◖",
-  "debug_settings.viafabricplus.ignore_fabric_sync_errors": "sɹoɹɹǝ ɔuʎs ɔᴉɹqɐℲ ǝɹouƃI",
   "debug_settings.viafabricplus.legacy_tab_completions": "suoᴉʇǝןdɯoɔ qɐʇ ʎɔɐƃǝ˥",
   "debug_settings.viafabricplus.hide_modern_jigsaw_screen_features": "sǝɹnʇɐǝɟ uǝǝɹɔs ʍɐsƃᴉſ uɹǝpoɯ ǝpᴉH",
   "debug_settings.viafabricplus.emulate_armor_hud": "◖∩H ɹoɯɹɐ ǝʇɐןnɯƎ",

@@ -30,7 +30,7 @@
   "classicube.viafabricplus.loading": "Načítaní informace účtu a seznam serverů...",
   "classicube.viafabricplus.warning": "Tato funkce pošle API requesty do ClassiCube API.",
   "betacraft.viafabricplus.warning": "Zmáčknutí tohoto tlačítka pošle API requesty do \"betacraft.uk/serverlist\".",
-  "classic4j_library.viafabricplus.error.token": "Neplatný token. Je vaše verze modu ViaFabricPlus zastaralá?",
+  "classic4j_library.viafabricplus.error.token": "Neplatný token. Je vaše verze modu ViaNeoForgePlus zastaralá?",
   "classic4j_library.viafabricplus.error.username": "Neplatné uživatelské jméno.",
   "classic4j_library.viafabricplus.error.password": "Neplatné heslo.",
   "classic4j_library.viafabricplus.error.verification": "Uživatel si ještě neverifikoval svoji E-mailovou adresu.",

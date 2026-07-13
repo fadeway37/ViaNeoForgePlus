@@ -1,4 +1,4 @@
-# Contributing to ViaFabricPlus
+# Contributing to ViaNeoForgePlus
 
 Thanks for your interest in contributing! This guide will walk you through setting up a workspace, updating
 translations, adding features, and maintaining high-quality contributions.
@@ -7,32 +7,30 @@ translations, adding features, and maintaining high-quality contributions.
 
 ## Setting Up a Workspace
 
-ViaFabricPlus uses **Gradle**. Make sure you have it
+ViaNeoForgePlus uses **Gradle** and ModDevGradle. Make sure you have it
 installed: [Gradle Installation Guide](https://gradle.org/install/).
 
-1. Clone the repo:
+1. Enter the project folder:
 
    ```bash
-   git clone https://github.com/ViaVersion/ViaFabricPlus
+   cd ViaNeoForgePlus
    ```
-2. Enter the project folder:
+2. Compile the project:
 
    ```bash
-   cd ViaFabricPlus
+   ./gradlew build
    ```
-3. Generate sources:
-
-   ```bash
-   ./gradlew genSources
-   ```
-4. Open the project as a **Gradle project** in your preferred IDE.
-5. Run the mod
+3. Open the project as a **Gradle project** in your preferred IDE.
+4. Run the client with `./gradlew runClient`.
 
 ---
 
 ## Updating Translation Files
 
 If you want to help translate ViaFabricPlus, you can do so on [Crowdin](https://crowdin.com/project/viafabricplus).
+
+Translation keys retain the upstream `viafabricplus` namespace. Keep translated product-name values as
+`ViaNeoForgePlus` in this port.
 
 ---
 
@@ -54,7 +52,7 @@ If you want to help translate ViaFabricPlus, you can do so on [Crowdin](https://
 
 ## Adding Protocol Fixes
 
-Protocol fixes are the **heart of ViaFabricPlus**. They're what make this project unique, so it's important to add only
+Protocol fixes are the **heart of ViaNeoForgePlus**. They're what make this project unique, so it's important to add only
 relevant and correct changes.
 
 Guidelines for fixes:

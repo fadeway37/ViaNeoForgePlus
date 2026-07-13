@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.features.entity.attribute;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
@@ -36,36 +36,40 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
 public final class EnchantmentAttributesEmulation1_20_6 {
 
     public static void init() {
-        ClientTickEvents.START_LEVEL_TICK.register(world -> {
-            if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20_5)) {
-                return;
+        NeoForge.EVENT_BUS.addListener(EnchantmentAttributesEmulation1_20_6::onLevelTick);
+    }
+
+    private static void onLevelTick(final LevelTickEvent.Pre event) {
+        if (!(event.getLevel() instanceof ClientLevel world) || ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20_5)) {
+            return;
+        }
+
+        // Update generic attributes for all entities
+        for (Entity entity : world.entitiesForRendering()) {
+            if (entity.isLocalInstanceAuthoritative() && entity instanceof LivingEntity livingEntity) {
+                setAttribute(livingEntity, Attributes.WATER_MOVEMENT_EFFICIENCY, getEquipmentLevel(Enchantments.DEPTH_STRIDER, livingEntity) / 3D);
+                setGenericMovementEfficiencyAttribute(livingEntity);
+            }
+        }
+
+        // Update player-specific attributes for all players
+        for (Player player : world.players()) {
+            if (!player.isLocalInstanceAuthoritative()) {
+                continue;
             }
 
-            // Update generic attributes for all entities
-            for (Entity entity : world.entitiesForRendering()) {
-                if (entity.isLocalInstanceAuthoritative() && entity instanceof LivingEntity livingEntity) {
-                    setAttribute(livingEntity, Attributes.WATER_MOVEMENT_EFFICIENCY, getEquipmentLevel(Enchantments.DEPTH_STRIDER, livingEntity) / 3D);
-                    setGenericMovementEfficiencyAttribute(livingEntity);
-                }
-            }
-
-            // Update player-specific attributes for all players
-            for (Player player : world.players()) {
-                if (!player.isLocalInstanceAuthoritative()) {
-                    continue;
-                }
-
-                final int efficiencyLevel = getEquipmentLevel(Enchantments.EFFICIENCY, player);
-                setAttribute(player, Attributes.MINING_EFFICIENCY, efficiencyLevel > 0 ? efficiencyLevel * efficiencyLevel + 1D : 0D);
-                setAttribute(player, Attributes.SNEAKING_SPEED, 0.3D + getEquipmentLevel(Enchantments.SWIFT_SNEAK, player) * 0.15D);
-                setAttribute(player, Attributes.SUBMERGED_MINING_SPEED, getEquipmentLevel(Enchantments.AQUA_AFFINITY, player) <= 0 ? 0.2D : 1D);
-                setAttribute(player, Attributes.ATTACK_KNOCKBACK, getEquipmentLevel(Enchantments.KNOCKBACK, player));
-            }
-        });
+            final int efficiencyLevel = getEquipmentLevel(Enchantments.EFFICIENCY, player);
+            setAttribute(player, Attributes.MINING_EFFICIENCY, efficiencyLevel > 0 ? efficiencyLevel * efficiencyLevel + 1D : 0D);
+            setAttribute(player, Attributes.SNEAKING_SPEED, 0.3D + getEquipmentLevel(Enchantments.SWIFT_SNEAK, player) * 0.15D);
+            setAttribute(player, Attributes.SUBMERGED_MINING_SPEED, getEquipmentLevel(Enchantments.AQUA_AFFINITY, player) <= 0 ? 0.2D : 1D);
+            setAttribute(player, Attributes.ATTACK_KNOCKBACK, getEquipmentLevel(Enchantments.KNOCKBACK, player));
+        }
     }
 
     /**
