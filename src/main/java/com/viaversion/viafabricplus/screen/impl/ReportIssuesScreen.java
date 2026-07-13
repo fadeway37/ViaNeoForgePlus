@@ -25,7 +25,6 @@ import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.screen.VFPScreen;
 import com.viaversion.viaversion.util.DumpUtil;
 import java.io.File;
-import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import net.minecraft.client.gui.components.Button;
@@ -47,14 +46,6 @@ public final class ReportIssuesScreen extends VFPScreen {
         if (!actions.isEmpty()) {
             return;
         }
-        actions.put("report.viafabricplus.bug_report", () -> {
-            Util.getPlatform().openUri(URI.create("https://github.com/ViaVersion/ViaFabricPlus/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml"));
-            this.setupSubtitle(Component.translatable("report.viafabricplus.bug_report.response"));
-        });
-        actions.put("report.viafabricplus.feature_request", () -> {
-            Util.getPlatform().openUri(URI.create("https://github.com/ViaVersion/ViaFabricPlus/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.yml"));
-            this.setupSubtitle(Component.translatable("report.viafabricplus.feature_request.response"));
-        });
         actions.put("report.viafabricplus.create_via_dump", () -> DumpUtil.postDump(minecraft.getUser().getProfileId()).whenComplete((s, throwable) -> {
             if (throwable != null) {
                 this.setupSubtitle(Component.translatable("report.viafabricplus.create_via_dump.failed"));

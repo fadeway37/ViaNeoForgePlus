@@ -39,7 +39,7 @@ public final class ProtocolSelectionScreen extends VFPScreen {
     public static final ProtocolSelectionScreen INSTANCE = new ProtocolSelectionScreen();
 
     private ProtocolSelectionScreen() {
-        super("ViaFabricPlus", true);
+        super("ViaNeoForgePlus", true);
     }
 
     @Override

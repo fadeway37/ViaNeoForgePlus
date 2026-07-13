@@ -29,6 +29,7 @@ import net.minecraft.world.entity.player.Abilities;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Group;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -44,15 +45,29 @@ public abstract class MixinServerboundPlayerAbilitiesPacket {
         this.viaFabricPlus$abilities = abilities;
     }
 
-    @Redirect(method = "write", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/FriendlyByteBuf;writeByte(I)Lnet/minecraft/network/FriendlyByteBuf;"))
+    @Group(name = "viaFabricPlus$writeAbilityFlags", min = 1, max = 1)
+    @Redirect(method = "write", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/FriendlyByteBuf;writeByte(I)Lnet/minecraft/network/FriendlyByteBuf;"), require = 0)
     private FriendlyByteBuf implementFlags(FriendlyByteBuf instance, int value) {
+        return instance.writeByte(this.viaFabricPlus$addLegacyFlags(value));
+    }
+
+    // NeoForge's IFriendlyByteBufExtension adds a byte overload which its
+    // patched Minecraft classes select for constant byte writes.
+    @Group(name = "viaFabricPlus$writeAbilityFlags")
+    @Redirect(method = "write", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/FriendlyByteBuf;writeByte(B)Lnet/minecraft/network/FriendlyByteBuf;"), require = 0)
+    private FriendlyByteBuf implementNeoForgeFlags(FriendlyByteBuf instance, byte value) {
+        return instance.writeByte(this.viaFabricPlus$addLegacyFlags(value));
+    }
+
+    @Unique
+    private int viaFabricPlus$addLegacyFlags(int value) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             if (viaFabricPlus$abilities.invulnerable) value |= 1;
             if (viaFabricPlus$abilities.mayfly) value |= 4;
             if (viaFabricPlus$abilities.instabuild) value |= 8;
         }
 
-        return instance.writeByte(value);
+        return value;
     }
 
 }

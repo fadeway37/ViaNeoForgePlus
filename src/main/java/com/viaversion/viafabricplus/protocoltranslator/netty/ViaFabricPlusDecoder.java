@@ -48,7 +48,7 @@ public final class ViaFabricPlusDecoder extends ViaDecodeHandler {
 
             final int mode = GeneralSettings.INSTANCE.ignorePacketTranslationErrors.getIndex();
             if (mode > 0) {
-                ViaFabricPlusImpl.INSTANCE.getLogger().error("Error occurred while decoding packet in ViaFabricPlus decoder", e);
+                ViaFabricPlusImpl.INSTANCE.getLogger().error("Error occurred while decoding packet in ViaNeoForgePlus decoder", e);
                 if (mode == 1) {
                     ChatUtil.sendPrefixedMessage(Component.translatable("translation.viafabricplus.packet_error").withStyle(ChatFormatting.RED));
                 }

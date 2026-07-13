@@ -1,5 +1,4 @@
 {
-  "modmenu.descriptionTranslation.viafabricplus": "Minecraft Fabric mod which allows you to join EVERY Minecraft server version (Classic, Alpha, Beta, Release, April Fools, Bedrock)",
 
   "base.viafabricplus.settings": "Settings",
   "base.viafabricplus.on": "On",
@@ -72,7 +71,6 @@
   "debug_settings.viafabricplus.always_tick_client_player": "Always tick client player",
   "debug_settings.viafabricplus.print_networking_errors_to_logs": "Print networking errors to logs",
   "debug_settings.viafabricplus.dont_create_packet_error_crash_reports": "Don't create packet error crash reports",
-  "debug_settings.viafabricplus.ignore_fabric_sync_errors": "Ignore Fabric sync errors",
   "debug_settings.viafabricplus.legacy_tab_completions": "Legacy tab completions",
   "debug_settings.viafabricplus.hide_modern_jigsaw_screen_features": "Hide modern Jigsaw screen features",
   "debug_settings.viafabricplus.emulate_armor_hud": "Emulate armor HUD",
@@ -134,13 +132,13 @@
   "classicube.viafabricplus.profile": "ClassiCube Profile:",
   "classicube.viafabricplus.warning": "This feature will send API requests to the ClassiCube API.",
 
-  "betacraft.viafabricplus.failed_to_verify_session": "ViaFabricPlus couldn't verify your session! Please log in to an account or disable the BetaCraft authentication in the ViaFabricPlus Settings",
+  "betacraft.viafabricplus.failed_to_verify_session": "ViaNeoForgePlus couldn't verify your session! Please log in to an account or disable the BetaCraft authentication in the ViaNeoForgePlus Settings",
   "betacraft.viafabricplus.loading": "Loading...",
   "betacraft.viafabricplus.warning": "Pressing this button will send API requests to \"betacraft.uk/serverlist\".",
 
   "translation.viafabricplus.packet_error": "An error occurred while translating a packet! See more details in the logs!",
 
-  "classic4j_library.viafabricplus.error.token": "Incorrect token. Is your ViaFabricPlus out of date?",
+  "classic4j_library.viafabricplus.error.token": "Incorrect token. Is your ViaNeoForgePlus out of date?",
   "classic4j_library.viafabricplus.error.username": "Invalid username.",
   "classic4j_library.viafabricplus.error.password": "Invalid password.",
   "classic4j_library.viafabricplus.error.verification": "User hasn't verified their email address yet.",
@@ -161,7 +159,7 @@
   "bedrock_realms.viafabricplus.warning": "This feature requires a Bedrock Edition account to be set in the settings!",
   "bedrock_realms.viafabricplus.availability_check": "Checking availability...",
   "bedrock_realms.viafabricplus.no_worlds": "No worlds found :(",
-  "bedrock_realms.viafabricplus.unavailable": "Your ViaFabricPlus is outdated and not compatible with Minecraft Realms.",
+  "bedrock_realms.viafabricplus.unavailable": "Your ViaNeoForgePlus is outdated and not compatible with Minecraft Realms.",
   "bedrock_realms.viafabricplus.error": "An error occurred, see the logs for more information",
   "bedrock_realms.viafabricplus.join": "Join realm",
   "bedrock_realms.viafabricplus.leave": "Leave realm",

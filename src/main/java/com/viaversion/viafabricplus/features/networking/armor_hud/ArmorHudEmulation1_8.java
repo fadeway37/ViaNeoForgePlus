@@ -31,11 +31,13 @@ import com.viaversion.viaversion.protocols.v1_8to1_9.Protocol1_8To1_9;
 import com.viaversion.viaversion.protocols.v1_8to1_9.data.ArmorTypes1_8;
 import com.viaversion.viaversion.protocols.v1_8to1_9.packet.ClientboundPackets1_9;
 import java.util.UUID;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
 public final class ArmorHudEmulation1_8 {
 
@@ -45,24 +47,26 @@ public final class ArmorHudEmulation1_8 {
     private static double previousArmorPoints = 0;
 
     public static void init() {
-        ClientTickEvents.START_LEVEL_TICK.register(world -> {
-            if (!DebugSettings.INSTANCE.emulateArmorHud.isEnabled()) {
-                return;
-            }
+        NeoForge.EVENT_BUS.addListener(ArmorHudEmulation1_8::onLevelTick);
+    }
 
-            if (Minecraft.getInstance().player != null) {
-                final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
-                if (connection != null) {
-                    try {
-                        sendArmorUpdate(connection);
-                    } catch (Throwable t) {
-                        ViaFabricPlusImpl.INSTANCE.getLogger().error("Error sending armor update", t);
-                    }
+    private static void onLevelTick(final LevelTickEvent.Pre event) {
+        if (!(event.getLevel() instanceof ClientLevel) || !DebugSettings.INSTANCE.emulateArmorHud.isEnabled()) {
+            return;
+        }
+
+        if (Minecraft.getInstance().player != null) {
+            final UserConnection connection = ProtocolTranslator.getPlayNetworkUserConnection();
+            if (connection != null) {
+                try {
+                    sendArmorUpdate(connection);
+                } catch (Throwable t) {
+                    ViaFabricPlusImpl.INSTANCE.getLogger().error("Error sending armor update", t);
                 }
-            } else {
-                previousArmorPoints = 0;
             }
-        });
+        } else {
+            previousArmorPoints = 0;
+        }
     }
 
     private static void sendArmorUpdate(final UserConnection connection) {

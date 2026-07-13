@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.interaction.replace_block_item_use_logic;
 
+import com.viaversion.viafabricplus.injection.access.item.IBlockItem;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.features.interaction.replace_block_placement_logic.ActionResultException1_12_2;
@@ -145,7 +146,7 @@ public abstract class MixinMultiPlayerGameMode {
         }
     }
 
-    @Inject(method = "performUseItemOn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isEmpty()Z", ordinal = 2))
+    @Inject(method = "performUseItemOn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isEmpty()Z"))
     private void interactBlock1_12_2(LocalPlayer player, InteractionHand hand, BlockHitResult blockHit, CallbackInfoReturnable<InteractionResult> cir) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             final ItemStack itemStack = player.getItemInHand(hand);
@@ -159,7 +160,7 @@ public abstract class MixinMultiPlayerGameMode {
                 }
                 final UseOnContext itemUsageContext = new UseOnContext(player, hand, checkHitResult);
                 final BlockPlaceContext itemPlacementContext = new BlockPlaceContext(itemUsageContext);
-                if (!itemPlacementContext.canPlace() || ((BlockItem) itemPlacementContext.getItemInHand().getItem()).getPlacementState(itemPlacementContext) == null) {
+                if (!itemPlacementContext.canPlace() || ((IBlockItem) itemPlacementContext.getItemInHand().getItem()).viaFabricPlus$invokeGetPlacementState(itemPlacementContext) == null) {
                     throw new ActionResultException1_12_2(InteractionResult.PASS);
                 }
             }

@@ -57,7 +57,7 @@ public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet
         if (evt.getClass().getName().equals("me.steinborn.krypton.mod.shared.misc.KryptonPipelineEvent")) {
             if (evt.toString().equals("COMPRESSION_ENABLED")) {
                 ViaChannelInitializer.reorderPipeline(ctx.pipeline(), HandlerNames.COMPRESS, HandlerNames.DECOMPRESS);
-                ViaFabricPlusImpl.INSTANCE.getLogger().warn("ViaFabricPlus has detected that the Krypton mod is installed. Please note that Krypton is mostly snake oil on the client side, and it is not recommended to use it.");
+                ViaFabricPlusImpl.INSTANCE.getLogger().warn("ViaNeoForgePlus has detected that the Krypton mod is installed. Please note that Krypton is mostly snake oil on the client side, and it is not recommended to use it.");
                 return;
             }
         }
