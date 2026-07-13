@@ -27,6 +27,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.neoforged.neoforge.common.CommonHooks;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -36,12 +37,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity {
 
-    @Redirect(method = "updatingUsingItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isSameItem(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;)Z"))
-    private boolean replaceItemStackEqualsCheck(ItemStack left, ItemStack right) {
+    @Redirect(method = "updatingUsingItem", at = @At(value = "INVOKE", target = "Lnet/neoforged/neoforge/common/CommonHooks;canContinueUsing(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;)Z", remap = false))
+    private boolean replaceItemStackEqualsCheck(ItemStack a, ItemStack b) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_3)) {
-            return left == right;
+            return a == b;
         } else {
-            return ItemStack.isSameItem(left, right);
+            return CommonHooks.canContinueUsing(a, b);
         }
     }
 

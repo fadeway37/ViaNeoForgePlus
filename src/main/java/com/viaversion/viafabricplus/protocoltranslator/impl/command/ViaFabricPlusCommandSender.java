@@ -23,15 +23,15 @@ package com.viaversion.viafabricplus.protocoltranslator.impl.command;
 
 import com.viaversion.viaversion.api.command.ViaCommandSender;
 import java.util.UUID;
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
-import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.client.Minecraft;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 
 public final class ViaFabricPlusCommandSender implements ViaCommandSender {
 
-    private final SharedSuggestionProvider source;
+    private final CommandSourceStack source;
 
-    public ViaFabricPlusCommandSender(final SharedSuggestionProvider source) {
+    public ViaFabricPlusCommandSender(final CommandSourceStack source) {
         this.source = source;
     }
 
@@ -42,17 +42,17 @@ public final class ViaFabricPlusCommandSender implements ViaCommandSender {
 
     @Override
     public void sendMessage(String s) {
-        ((FabricClientCommandSource) source).sendFeedback(Component.nullToEmpty(s.replace("/viaversion", "/viafabricplus"))); // ViaVersion doesn't support changing the root command name, so we have to do it ourselves
+        this.source.sendSystemMessage(Component.nullToEmpty(s.replace("/viaversion", "/vianeoforgeplus")));
     }
 
     @Override
     public UUID getUUID() {
-        return ((FabricClientCommandSource) source).getPlayer().getUUID();
+        return Minecraft.getInstance().player != null ? Minecraft.getInstance().player.getUUID() : new UUID(0L, 0L);
     }
 
     @Override
     public String getName() {
-        return ((FabricClientCommandSource) source).getPlayer().getName().getString();
+        return Minecraft.getInstance().player != null ? Minecraft.getInstance().player.getName().getString() : "ViaNeoForgePlus";
     }
 
 }

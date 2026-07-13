@@ -1,5 +1,4 @@
 {
-  "modmenu.descriptionTranslation.viafabricplus": "Mod Minecraft Fabric qui vous permet de rejoindre TOUTES les versions de serveurs Minecraft (Classic, Alpha, Beta, Release, April Fools, Bedrock)",
   "base.viafabricplus.settings": "Paramètres",
   "base.viafabricplus.on": "Activé",
   "base.viafabricplus.off": "Désactivé",
@@ -49,7 +48,7 @@
   "classicube.viafabricplus.loading": "Chargement des informations de profil et de la liste des serveurs...",
   "classicube.viafabricplus.warning": "Cette fonctionnalité enverra des requêtes API à l'API ClassiCube.",
   "betacraft.viafabricplus.warning": "Appuyer sur ce bouton enverra des requêtes API à betacraft.uk/serverlist",
-  "classic4j_library.viafabricplus.error.token": "Jeton incorrect. ViaFabricPlus est à jour ?",
+  "classic4j_library.viafabricplus.error.token": "Jeton incorrect. ViaNeoForgePlus est à jour ?",
   "classic4j_library.viafabricplus.error.username": "Nom d'utilisateur invalide.",
   "classic4j_library.viafabricplus.error.password": "Mot de passe invalide.",
   "classic4j_library.viafabricplus.error.verification": "L'utilisateur n'a pas encore vérifié son adresse e-mail.",

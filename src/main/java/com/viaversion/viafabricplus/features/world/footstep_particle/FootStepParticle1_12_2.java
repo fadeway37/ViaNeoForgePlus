@@ -23,27 +23,31 @@ package com.viaversion.viafabricplus.features.world.footstep_particle;
 
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
-import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.Camera;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.state.level.QuadParticleRenderState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import org.joml.Quaternionf;
 
 public final class FootStepParticle1_12_2 extends SingleQuadParticle {
 
     public static final Identifier ID = Identifier.fromNamespaceAndPath("viafabricplus", "footstep");
+    private static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(BuiltInRegistries.PARTICLE_TYPE, ID.getNamespace());
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> FOOTSTEP = PARTICLE_TYPES.register(ID.getPath(), () -> new SimpleParticleType(true));
     public static int RAW_ID;
 
     private FootStepParticle1_12_2(ClientLevel clientWorld, double x, double y, double z, TextureAtlasSprite sprite) {
@@ -54,12 +58,16 @@ public final class FootStepParticle1_12_2 extends SingleQuadParticle {
     }
 
     public static void init() {
-        final SimpleParticleType footStepType = FabricParticleTypes.simple(true);
+        RAW_ID = BuiltInRegistries.PARTICLE_TYPE.getId(FOOTSTEP.get());
+    }
 
-        Registry.register(BuiltInRegistries.PARTICLE_TYPE, ID, footStepType);
-        ParticleProviderRegistry.getInstance().register(footStepType, FootStepParticle1_12_2.Factory::new);
+    public static void register(final IEventBus modBus) {
+        PARTICLE_TYPES.register(modBus);
+        modBus.addListener(FootStepParticle1_12_2::registerProviders);
+    }
 
-        RAW_ID = BuiltInRegistries.PARTICLE_TYPE.getId(footStepType);
+    private static void registerProviders(final RegisterParticleProvidersEvent event) {
+        event.registerSpriteSet(FOOTSTEP.get(), FootStepParticle1_12_2.Factory::new);
     }
 
     @Override

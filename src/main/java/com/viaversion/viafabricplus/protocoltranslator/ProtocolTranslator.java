@@ -64,16 +64,17 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.lenni0451.reflect.stream.RStream;
 import net.lenni0451.reflect.stream.field.FieldWrapper;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.Connection;
 import net.minecraft.network.HandlerNames;
 import net.minecraft.util.Util;
+import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import net.raphimc.viabedrock.ViaBedrockPlatformImpl;
 import net.raphimc.viabedrock.api.BedrockProtocolVersion;
 import net.raphimc.viabedrock.netty.BatchLengthCodec;
@@ -201,7 +202,7 @@ public final class ProtocolTranslator {
 
     public static ProtocolVersion getTargetVersion(final Channel channel) {
         if (!channel.hasAttr(TARGET_VERSION_ATTRIBUTE_KEY)) {
-            throw new IllegalStateException("ViaFabricPlus has not injected into that channel yet!");
+            throw new IllegalStateException("ViaNeoForgePlus has not injected into that channel yet!");
         }
 
         return channel.attr(TARGET_VERSION_ATTRIBUTE_KEY).get();
@@ -273,6 +274,23 @@ public final class ProtocolTranslator {
         return ((IConnection) handler.getConnection()).viaFabricPlus$getUserConnection();
     }
 
+    public static void registerEvents() {
+        NeoForge.EVENT_BUS.addListener(ProtocolTranslator::registerClientCommands);
+    }
+
+    private static void registerClientCommands(final RegisterClientCommandsEvent event) {
+        final ViaFabricPlusCommandHandler commandHandler = (ViaFabricPlusCommandHandler) Via.getManager().getCommandHandler();
+        event.getDispatcher().register(createCommand("vianeoforgeplus", commandHandler));
+        event.getDispatcher().register(createCommand("viafabricplus", commandHandler));
+    }
+
+    private static LiteralArgumentBuilder<CommandSourceStack> createCommand(final String name, final ViaFabricPlusCommandHandler commandHandler) {
+        final RequiredArgumentBuilder<CommandSourceStack, String> executor = RequiredArgumentBuilder.<CommandSourceStack, String>argument("args", StringArgumentType.greedyString())
+            .executes(commandHandler::execute)
+            .suggests(commandHandler::suggestion);
+        return LiteralArgumentBuilder.<CommandSourceStack>literal(name).then(executor).executes(commandHandler::execute);
+    }
+
     private static void changeBedrockProtocolName() {
         final ProtocolVersion bedrockLatest = RStream.of(BedrockProtocolVersion.class).fields().by("bedrockLatest").get();
 
@@ -290,14 +308,6 @@ public final class ProtocolTranslator {
         if (SharedConstants.getProtocolVersion() != NATIVE_VERSION.getOriginalVersion()) {
             throw new IllegalStateException("Native version is not the same as the current version");
         }
-
-        // Register command callback for /viafabricplus
-        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            final ViaFabricPlusCommandHandler commandHandler = (ViaFabricPlusCommandHandler) Via.getManager().getCommandHandler();
-            final RequiredArgumentBuilder<FabricClientCommandSource, String> executor = RequiredArgumentBuilder.<FabricClientCommandSource, String>argument("args", StringArgumentType.greedyString()).executes(commandHandler::execute).suggests(commandHandler::suggestion);
-
-            dispatcher.register(LiteralArgumentBuilder.<FabricClientCommandSource>literal("viafabricplus").then(executor).executes(commandHandler::execute));
-        });
 
         return CompletableFuture.runAsync(() -> {
             // Load ViaVersion and register all platforms and their components

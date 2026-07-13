@@ -64,8 +64,6 @@ import org.joml.Matrix3x2fStack;
  */
 public class VFPScreen extends Screen {
 
-    private static final String MOD_URL = "https://github.com/ViaVersion/ViaFabricPlus";
-
     private final boolean backButton;
     public Screen prevScreen;
 
@@ -85,11 +83,10 @@ public class VFPScreen extends Screen {
 
     /**
      * Sets the subtitle and the subtitle press action to the default values
-     * The default value of the subtitle is the url to the GitHub repository of VFP
-     * The default value of the subtitle press action is to open the url in a confirmation screen
+     * The default subtitle identifies this NeoForge port and its upstream project.
      */
     public void setupDefaultSubtitle() {
-        this.setupUrlSubtitle(MOD_URL);
+        this.setupSubtitle(Component.nullToEmpty("NeoForge port of ViaFabricPlus"));
     }
 
     /**
@@ -190,7 +187,7 @@ public class VFPScreen extends Screen {
     }
 
     /**
-     * Renders the ViaFabricPlus title
+     * Renders the ViaNeoForgePlus title
      *
      * @param context The current draw context
      */
@@ -199,7 +196,7 @@ public class VFPScreen extends Screen {
 
         matrices.pushMatrix();
         matrices.scale(2F, 2F);
-        context.centeredText(font, "ViaFabricPlus", width / 4, 3, Color.ORANGE.getRGB());
+        context.centeredText(font, "ViaNeoForgePlus", width / 4, 3, Color.ORANGE.getRGB());
         matrices.popMatrix();
 
         renderSubtitle(context);

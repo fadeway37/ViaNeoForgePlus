@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.features.world.item_picking;
 
 import com.mojang.logging.LogUtils;
+import com.viaversion.viafabricplus.injection.access.block.IBlockBehaviour;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Types;
@@ -82,7 +83,7 @@ public final class ItemPick1_21_3 {
             }
 
             final Block block = blockState.getBlock();
-            itemStack = block.getCloneItemStack(client.level, blockPos, blockState, false);
+            itemStack = ((IBlockBehaviour) block).viaFabricPlus$invokeGetCloneItemStack(client.level, blockPos, blockState, false);
             if (itemStack.isEmpty()) {
                 return;
             }

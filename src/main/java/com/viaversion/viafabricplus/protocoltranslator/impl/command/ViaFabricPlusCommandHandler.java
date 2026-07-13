@@ -27,9 +27,9 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.viaversion.viafabricplus.protocoltranslator.impl.command.classic.ListExtensionsCommand;
 import com.viaversion.viafabricplus.protocoltranslator.impl.command.classic.SetTimeCommand;
-import java.util.concurrent.CompletableFuture;
 import com.viaversion.viaversion.commands.ViaCommandHandler;
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import java.util.concurrent.CompletableFuture;
+import net.minecraft.commands.CommandSourceStack;
 
 public final class ViaFabricPlusCommandHandler extends ViaCommandHandler {
 
@@ -45,7 +45,7 @@ public final class ViaFabricPlusCommandHandler extends ViaCommandHandler {
         this.registerSubCommand(new SettingsCommand());
     }
 
-    public int execute(final CommandContext<FabricClientCommandSource> ctx) {
+    public int execute(final CommandContext<CommandSourceStack> ctx) {
         String[] args = new String[0];
         try {
             args = StringArgumentType.getString(ctx, "args").split(" ");
@@ -55,7 +55,7 @@ public final class ViaFabricPlusCommandHandler extends ViaCommandHandler {
         return 1;
     }
 
-    public CompletableFuture<Suggestions> suggestion(CommandContext<FabricClientCommandSource> ctx, SuggestionsBuilder builder) {
+    public CompletableFuture<Suggestions> suggestion(CommandContext<CommandSourceStack> ctx, SuggestionsBuilder builder) {
         String[] args;
         try {
             args = StringArgumentType.getString(ctx, "args").split(" ", -1);

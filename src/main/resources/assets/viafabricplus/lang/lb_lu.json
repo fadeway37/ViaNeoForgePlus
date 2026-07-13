@@ -1,5 +1,4 @@
 {
-  "modmenu.descriptionTranslation.viafabricplus": "Fabric-Mod zum Verbannen mat ALL Minecraft-Serverversioun (Release, Alpha, Beta, Classic, Snapshots, Bedrock) mat QoL-Verbesserungen zum Spielverhaalen",
   "base.viafabricplus.settings": "Astellungen",
   "base.viafabricplus.on": "Un",
   "base.viafabricplus.off": "Aus",
@@ -46,7 +45,6 @@
   "debug_settings.viafabricplus.always_tick_client_player": "Client-Spiller emmer ticken",
   "debug_settings.viafabricplus.print_networking_errors_to_logs": "Networking Fehler am log uweisen",
   "debug_settings.viafabricplus.dont_create_packet_error_crash_reports": "Keng Päckchenfehler-Ofstuerzberichter erstellen",
-  "debug_settings.viafabricplus.ignore_fabric_sync_errors": "Fabric-Synchronisationsfehler ignoreieren",
   "debug_settings.viafabricplus.legacy_tab_completions": "Veraltet Tab-Vervollstännegungen",
   "authentication_settings.viafabricplus.use_beta_craft_authentication": "BetaCraft-Authentifizeierung benotzen",
   "authentication_settings.viafabricplus.verify_session_for_online_mode": "Setzung fir Online-Modus-Server verifizeieren",
@@ -74,7 +72,7 @@
   "classicube.viafabricplus.loading": "Profilinformationen an Serverlescht ginn gelueden...",
   "classicube.viafabricplus.warning": "Dess Funktioun sendet API-Ufroen an dClassiCube-API.",
   "betacraft.viafabricplus.warning": "Duerch Drecken desser Schaltfläch ginn API-Ufroen un \"betacraft.uk/serverlist\" gescheckt.",
-  "classic4j_library.viafabricplus.error.token": "Inkorrekten Token. Ass ViaFabricPlus veraltet?",
+  "classic4j_library.viafabricplus.error.token": "Inkorrekten Token. Ass ViaNeoForgePlus veraltet?",
   "classic4j_library.viafabricplus.error.username": "Ungültigen Benotzernumm.",
   "classic4j_library.viafabricplus.error.password": "Ungültegt Passwuert.",
   "classic4j_library.viafabricplus.error.verification": "Benotzer huet seng E-Mail-Adress nach net verifizeiert.",

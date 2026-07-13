@@ -34,16 +34,11 @@ import com.viaversion.viaversion.configuration.AbstractViaConfig;
 import com.viaversion.viaversion.libs.gson.JsonArray;
 import com.viaversion.viaversion.libs.gson.JsonObject;
 import com.viaversion.viaversion.platform.UserConnectionViaVersionPlatform;
-import java.io.File;
-import java.util.Collection;
-import java.util.Map;
-import java.util.logging.Logger;
 import com.viaversion.viaversion.util.GsonUtil;
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
-import net.fabricmc.loader.api.metadata.ModMetadata;
-import net.fabricmc.loader.api.metadata.Person;
+import java.io.File;
+import java.util.logging.Logger;
 import net.minecraft.client.Minecraft;
+import net.neoforged.fml.ModList;
 import org.slf4j.LoggerFactory;
 
 public final class ViaFabricPlusViaVersionPlatform extends UserConnectionViaVersionPlatform {
@@ -59,7 +54,7 @@ public final class ViaFabricPlusViaVersionPlatform extends UserConnectionViaVers
 
     @Override
     public String getPlatformName() {
-        return "ViaFabricPlus";
+        return "ViaNeoForgePlus";
     }
 
     @Override
@@ -96,27 +91,13 @@ public final class ViaFabricPlusViaVersionPlatform extends UserConnectionViaVers
         platformDump.addProperty("target_version", ProtocolTranslator.getTargetVersion().toString());
         platformDump.addProperty("in_world", Minecraft.getInstance().level != null);
 
-        final Collection<ModContainer> allMods = FabricLoader.getInstance().getAllMods();
+        final var allMods = ModList.get().getMods();
         final JsonArray mods = new JsonArray(allMods.size());
-        for (final ModContainer modContainer : allMods) {
-            final ModMetadata metadata = modContainer.getMetadata();
+        for (final var metadata : allMods) {
             final JsonObject mod = new JsonObject();
-            mod.addProperty("id", metadata.getId());
-            mod.addProperty("name", metadata.getName());
-            mod.addProperty("version", metadata.getVersion().getFriendlyString());
-            final JsonArray authors = new JsonArray(metadata.getAuthors().size());
-            for (final Person person : metadata.getAuthors()) {
-                final JsonObject info = new JsonObject();
-                final Map<String, String> contactMap = person.getContact().asMap();
-                if (!contactMap.isEmpty()) {
-                    final JsonObject contact = new JsonObject();
-                    contactMap.forEach(contact::addProperty);
-                    info.add("contact", contact);
-                }
-                info.addProperty("name", person.getName());
-                authors.add(info);
-            }
-            mod.add("authors", authors);
+            mod.addProperty("id", metadata.getModId());
+            mod.addProperty("name", metadata.getDisplayName());
+            mod.addProperty("version", metadata.getVersion().toString());
 
             mods.add(mod);
         }

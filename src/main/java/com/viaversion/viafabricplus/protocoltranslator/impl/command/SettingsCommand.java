@@ -33,7 +33,7 @@ public final class SettingsCommand implements VFPSubCommand {
 
     @Override
     public String description() {
-        return "Opens ViaFabricPlus's configuration/options screen";
+        return "Opens ViaNeoForgePlus's configuration/options screen";
     }
 
     @Override

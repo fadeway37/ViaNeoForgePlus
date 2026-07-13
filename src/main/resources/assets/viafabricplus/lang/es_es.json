@@ -1,5 +1,4 @@
 {
-  "modmenu.descriptionTranslation.viafabricplus": "Mod de fabric para conectarse a CUALQUIER servidor de minecraft (Lanzamientos, Beta, Alpha, Classic, Snapshots, Bedrock) con fixes QoL en el juego",
   "base.viafabricplus.settings": "Configuración",
   "base.viafabricplus.on": "Sí",
   "base.viafabricplus.off": "No",
@@ -62,7 +61,7 @@
   "classicube.viafabricplus.loading": "Cargando información del perfil y la lista de servidores...",
   "classicube.viafabricplus.warning": "Esta función enviará solicitudes de API a la API de ClassiCube.",
   "betacraft.viafabricplus.warning": "Presionando este botón enviará solicitudes de API a \"betacraft.uk/serverlist\".",
-  "classic4j_library.viafabricplus.error.token": "Token incorrecto. ¿Está ViaFabricPlus desactualizado?",
+  "classic4j_library.viafabricplus.error.token": "Token incorrecto. ¿Está ViaNeoForgePlus desactualizado?",
   "classic4j_library.viafabricplus.error.username": "Nombre de usuario incorrecto.",
   "classic4j_library.viafabricplus.error.password": "Contraseña incorrecta.",
   "classic4j_library.viafabricplus.error.verification": "El usuario aún no ha verificado su e-mail.",

@@ -42,7 +42,7 @@ public abstract class MixinParticleIdMappings1_13 {
     @Inject(method = "<clinit>", at = @At("RETURN"))
     private static void checkFootStepIdOverlap(CallbackInfo ci) {
         if (FootStepParticle1_12_2.RAW_ID < particles.size()) {
-            throw new IllegalStateException("ViaFabricPlus FootStepParticle ID overlaps with a vanilla 1.12.2 particle ID");
+            throw new IllegalStateException("ViaNeoForgePlus FootStepParticle ID overlaps with a vanilla 1.12.2 particle ID");
         }
     }
 

@@ -22,10 +22,10 @@
 package com.viaversion.viafabricplus.injection;
 
 import com.viaversion.viafabricplus.features.movement.constants.LithiumWorkaround;
-import com.viaversion.viafabricplus.features.movement.elytra.FabricAPIWorkaround;
 import java.util.List;
 import java.util.Set;
-import net.fabricmc.loader.api.FabricLoader;
+import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.LoadingModList;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -44,16 +44,20 @@ public final class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
     @Override
     public void onLoad(String mixinPackage) {
         //org.spongepowered.asm.mixin.MixinEnvironment.getCurrentEnvironment().audit(); // Uncomment during Minecraft updates
-        final FabricLoader loader = FabricLoader.getInstance();
-        IPNEXT_PRESENT = loader.isModLoaded("inventoryprofilesnext");
-        MORE_CULLING_PRESENT = loader.isModLoaded("moreculling");
-        LITHIUM_PRESENT = loader.isModLoaded("lithium");
-        MOONRISE_PRESENT = loader.isModLoaded("moonrise");
-        LEGENDARYTOOLTIPS_PRESENT = loader.isModLoaded("legendarytooltips");
-        LEGACY_PRESENT = loader.isModLoaded("legacy");
+        final FMLLoader loader = FMLLoader.getCurrentOrNull();
+        final LoadingModList modList = loader != null ? loader.getLoadingModList() : null;
+        IPNEXT_PRESENT = isModLoaded(modList, "inventoryprofilesnext");
+        MORE_CULLING_PRESENT = isModLoaded(modList, "moreculling");
+        LITHIUM_PRESENT = isModLoaded(modList, "lithium");
+        MOONRISE_PRESENT = isModLoaded(modList, "moonrise");
+        LEGENDARYTOOLTIPS_PRESENT = isModLoaded(modList, "legendarytooltips");
+        LEGACY_PRESENT = isModLoaded(modList, "legacy");
 
-        FabricAPIWorkaround.init();
         LithiumWorkaround.init();
+    }
+
+    private static boolean isModLoaded(final LoadingModList modList, final String id) {
+        return modList != null && modList.getModFileById(id) != null;
     }
 
     @Override
