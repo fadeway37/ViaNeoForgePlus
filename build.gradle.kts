@@ -147,10 +147,10 @@ dependencies {
     add("embedded", "net.raphimc:MinecraftAuth:5.0.1") {
         exclude(group = "com.google.code.gson", module = "gson")
     }
-    add("embedded", "dev.kastle.netty:netty-transport-raknet:1.7.0") {
+    add("embedded", "dev.kastle.netty:netty-transport-raknet:1.7.1") {
         exclude(group = "io.netty")
     }
-    add("embedded", "dev.kastle.netty:netty-transport-nethernet:1.7.0") {
+    add("embedded", "dev.kastle.netty:netty-transport-nethernet:1.7.1") {
         exclude(group = "io.netty")
         exclude(group = "com.google.code.gson", module = "gson")
     }
