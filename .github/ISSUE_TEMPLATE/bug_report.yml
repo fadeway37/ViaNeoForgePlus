@@ -1,12 +1,12 @@
 name: Bug Report
-description: Report a ViaFabricPlus bug or issue
+description: Report a ViaNeoForgePlus bug or issue
 labels: [ S-needs-triage, T-bug ]
 
 body:
   - type: markdown
     attributes:
       value: |
-        **Before reporting a bug, please check whether the latest build from https://ci.viaversion.com/view/Platforms/job/ViaFabricPlus/ resolves your issue.**
+        **Before reporting a bug, please check whether the latest release from https://github.com/fadeway37/ViaNeoForgePlus/releases resolves your issue.**
 
         You can upload screenshots or videos in any text field when relevant.
 
@@ -14,12 +14,12 @@ body:
     attributes:
       label: General Information
       description: |
-        Go to `Multiplayer -> ViaFabricPlus -> Report Issues`, click `Create a ViaVersion dump`, and paste the generated link here.
-
-        Then click `Open Logs Folder`, upload `latest.log` to mclo.gs, and paste the link here.
+        Include your ViaNeoForgePlus, Minecraft, NeoForge, Java, and target server versions.
+        Upload `latest.log` to mclo.gs and paste the link here.
       placeholder: |
-        ViaVersion dump URL: paste here
-        (Alternative: screenshot of your mods folder): paste here
+        ViaNeoForgePlus version: paste here
+        Minecraft / NeoForge / Java versions: paste here
+        Target server version: paste here
         latest.log URL (mclo.gs): paste here
     validations:
       required: true

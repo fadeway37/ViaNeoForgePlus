@@ -5,7 +5,8 @@
   <a href="https://neoforged.net/"><img src="https://img.shields.io/badge/Mod%20Loader-NeoForge-orange" alt="Mod Loader: NeoForge"></a>
   <img src="https://img.shields.io/badge/Environment-Client-purple" alt="Environment: Client">
   <a href="https://github.com/ViaVersion/ViaFabricPlus"><img src="https://img.shields.io/badge/Upstream-ViaFabricPlus-2f80ed" alt="Upstream: ViaFabricPlus"></a>
-  <a href="https://discord.gg/viaversion"><img src="https://img.shields.io/discord/316206679014244363?color=0098DB&label=Discord&logo=discord&logoColor=0098DB" alt="ViaVersion Discord"></a>
+  <a href="https://discord.gg/viaversion"><img src="https://img.shields.io/discord/316206679014244363?color=0098DB&label=Discord&logo=discord&logoColor=0098DB" alt="ViaVersion Discord"></a><br/>
+  <a href="https://github.com/fadeway37/ViaNeoForgePlus/actions/workflows/build.yml"><img src="https://github.com/fadeway37/ViaNeoForgePlus/actions/workflows/build.yml/badge.svg" alt="Build Status"></a>
 
   <p><strong>Minecraft NeoForge mod that allows you to join <em>every</em> Minecraft server version (Classic, Alpha, Beta, Release, April Fools, Bedrock)</strong></p>
 </div>
@@ -44,6 +45,7 @@ settings screen is available from NeoForge's mod list. The primary command is `/
 retained as a compatibility alias.
 
 - [Step-by-step installation and usage guide](docs/USAGE.md)
+- Found a bug? Please report it on the [issue tracker](https://github.com/fadeway37/ViaNeoForgePlus/issues)
 - Got questions about the upstream project? Join the [ViaVersion Discord](https://discord.gg/viaversion)
 
 ### Supported Server versions
