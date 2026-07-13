@@ -1,6 +1,6 @@
 <!--suppress HtmlDeprecatedAttribute -->
 <div align="center">
-  <img src="src/main/resources/assets/viafabricplus/icon.png" width="150" alt="ViaNeoForgePlus logo">
+  <img src="logo.png" width="150" alt="ViaNeoForgePlus logo">
   <h1>ViaNeoForgePlus</h1>
   <a href="https://neoforged.net/"><img src="https://img.shields.io/badge/Mod%20Loader-NeoForge-orange" alt="Mod Loader: NeoForge"></a>
   <img src="https://img.shields.io/badge/Environment-Client-purple" alt="Environment: Client">
