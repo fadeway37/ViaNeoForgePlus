@@ -142,7 +142,7 @@ dependencies {
         exclude(group = "io.netty")
     }
 
-    add("embedded", "net.lenni0451:Reflect:1.6.3")
+    add("embedded", "net.lenni0451:Reflect:1.6.4")
     add("embedded", "de.florianreuth:classic4j:2.3.0")
     add("embedded", "net.raphimc:MinecraftAuth:5.0.1") {
         exclude(group = "com.google.code.gson", module = "gson")
