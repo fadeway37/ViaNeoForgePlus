@@ -184,8 +184,8 @@ public abstract class MixinClientPacketListener extends ClientCommonPacketListen
         }
     }
 
-    @WrapWithCondition(method = "handleRespawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;startWaitingForNewLevel(Lnet/minecraft/client/player/LocalPlayer;Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/client/gui/screens/LevelLoadingScreen$Reason;)V"))
-    private boolean checkDimensionChange(ClientPacketListener instance, LocalPlayer player, ClientLevel world, LevelLoadingScreen.Reason worldEntryReason, @Local(ordinal = 0) ResourceKey<Level> registryKey) {
+    @WrapWithCondition(method = "handleRespawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;startWaitingForNewLevel(Lnet/minecraft/client/player/LocalPlayer;Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/client/gui/screens/LevelLoadingScreen$Reason;Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/resources/ResourceKey;)V"))
+    private boolean checkDimensionChange(ClientPacketListener instance, LocalPlayer player, ClientLevel world, LevelLoadingScreen.Reason worldEntryReason, ResourceKey<Level> destinationDimension, ResourceKey<Level> sourceDimension, @Local(ordinal = 0) ResourceKey<Level> registryKey) {
         return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_20_3) || registryKey != this.minecraft.player.level().dimension();
     }
 

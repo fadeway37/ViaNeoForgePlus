@@ -13,7 +13,6 @@
     "compat.minecraftauth.MixinClasses",
     "compat.minecraftauth.MixinDefaultJwtParserBuilder",
     "core.MixinMain",
-    "core.MixinMinecraft",
     "core.access.MixinBlockBehaviour",
     "core.access.MixinBlockItem",
     "core.access.MixinChunkTracker",
