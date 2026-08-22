@@ -26,7 +26,7 @@ entity interactions, graphics, and more. In short, it recreates the classic Mine
 
 ## Important to know
 
-- Currently targets **Minecraft 26.2**, **NeoForge 26.2.0.11-beta or newer compatible 26.2 builds**, and **Java 25**
+- Works **only with the newest Minecraft client version**
 - Runs **only on [NeoForge](https://neoforged.net/)**; do not install the Fabric version alongside it
 - **Multiplayer only** – it does not affect singleplayer worlds
 - **Clientside only** – it does not need to be installed on multiplayer servers
