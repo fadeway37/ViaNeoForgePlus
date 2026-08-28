@@ -43,7 +43,7 @@ public final class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void onLoad(String mixinPackage) {
-        org.spongepowered.asm.mixin.MixinEnvironment.getCurrentEnvironment().audit(); // Uncomment during Minecraft updates
+        //org.spongepowered.asm.mixin.MixinEnvironment.getCurrentEnvironment().audit(); // Uncomment during Minecraft updates
         final FMLLoader loader = FMLLoader.getCurrentOrNull();
         final LoadingModList modList = loader != null ? loader.getLoadingModList() : null;
         IPNEXT_PRESENT = isModLoaded(modList, "inventoryprofilesnext");

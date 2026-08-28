@@ -135,7 +135,7 @@ dependencies {
     add("embedded", "com.viaversion:viaversion-common:5.12.0-20260819.184210-4")
     add("embedded", "com.viaversion:viabackwards-common:5.12.0-20260805.160710-1")
     add("embedded", "com.viaversion:viaaprilfools-common:4.2.3-20260820.140819-4")
-    add("embedded", "net.raphimc:ViaLegacy:3.1.0-20260817.204914-4")
+    add("embedded", "net.raphimc:ViaLegacy:3.1.0-20260821.100118-5")
     add("embedded", "net.raphimc:ViaBedrock:0.0.29-20260720.172239-5") {
         exclude(group = "com.mojang", module = "brigadier")
         exclude(group = "at.yawk.lz4", module = "lz4-java")
