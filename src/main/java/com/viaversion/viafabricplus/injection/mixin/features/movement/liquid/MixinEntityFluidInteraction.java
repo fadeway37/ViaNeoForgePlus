@@ -42,7 +42,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(EntityFluidInteraction.class)
 public abstract class MixinEntityFluidInteraction {
 
-    @Redirect(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;getEyeY()D"))
+    @Redirect(method = "update(Lnet/minecraft/world/entity/Entity;Ljava/util/function/Predicate;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;getEyeY()D"))
     private double subtractMagicOffset(Entity instance) {
         if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_16, ProtocolVersion.v1_20_3)) {
             return instance.getEyeY() - 0.11111111F;
@@ -54,7 +54,7 @@ public abstract class MixinEntityFluidInteraction {
     @Definition(id = "eyeY", local = @Local(type = double.class, name = "eyeY"))
     @Definition(id = "fluidTop", local = @Local(type = double.class, name = "fluidTop"))
     @Expression("eyeY <= fluidTop")
-    @ModifyExpressionValue(method = "update", at = @At("MIXINEXTRAS:EXPRESSION"))
+    @ModifyExpressionValue(method = "update(Lnet/minecraft/world/entity/Entity;Ljava/util/function/Predicate;)V", at = @At("MIXINEXTRAS:EXPRESSION"))
     private boolean addMagicOffset(boolean original, @Local(name = "eyeY") double eyeY, @Local(name = "fluidBottom") double fluidBottom, @Local(name = "level") BlockGetter level, @Local(name = "fluidState") FluidState fluidState, @Local(name = "mutablePos") BlockPos.MutableBlockPos mutablePos) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             return eyeY <= (fluidBottom + (fluidState.getHeight(level, mutablePos) + (0.11111111F * 2F)));
@@ -67,7 +67,7 @@ public abstract class MixinEntityFluidInteraction {
     @Definition(id = "box", local = @Local(type = AABB.class, name = "box"))
     @Definition(id = "minY", field = "Lnet/minecraft/world/phys/AABB;minY:D")
     @Expression("fluidTop < box.minY")
-    @ModifyExpressionValue(method = "update", at = @At("MIXINEXTRAS:EXPRESSION"))
+    @ModifyExpressionValue(method = "update(Lnet/minecraft/world/entity/Entity;Ljava/util/function/Predicate;)V", at = @At("MIXINEXTRAS:EXPRESSION"))
     private boolean removeConditional(boolean original) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return false; // Equates to true due to the negation in the original code
@@ -76,7 +76,7 @@ public abstract class MixinEntityFluidInteraction {
         }
     }
 
-    @Redirect(method = "update", at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(DD)D"))
+    @Redirect(method = "update(Lnet/minecraft/world/entity/Entity;Ljava/util/function/Predicate;)V", at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(DD)D"))
     private double adjustHeightCalculation(double a, double b) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return Math.max(a + 0.4, b);
@@ -85,7 +85,7 @@ public abstract class MixinEntityFluidInteraction {
         }
     }
 
-    @Redirect(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;scale(D)Lnet/minecraft/world/phys/Vec3;"))
+    @Redirect(method = "update(Lnet/minecraft/world/entity/Entity;Ljava/util/function/Predicate;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;scale(D)Lnet/minecraft/world/phys/Vec3;"))
     private Vec3 dontScaleCurrent(Vec3 instance, double scale) {
         if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) || ProtocolTranslator.getTargetVersion().equals(BedrockProtocolVersion.bedrockLatest)) {
             return instance;
