@@ -159,7 +159,7 @@ dependencies {
         add("webrtcNatives", "dev.kastle.webrtc:webrtc-java:1.0.3:$it")
     }
 
-    testImplementation(platform("org.junit:junit-bom:6.0.3"))
+    testImplementation(platform("org.junit:junit-bom:6.1.3"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
