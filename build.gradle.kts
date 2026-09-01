@@ -3,7 +3,7 @@ import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 plugins {
     `java-library`
     `maven-publish`
-    id("net.neoforged.moddev") version "2.0.141"
+    id("net.neoforged.moddev") version "2.0.144"
 }
 
 group = property("project_group") as String
