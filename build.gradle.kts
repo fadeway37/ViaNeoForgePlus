@@ -144,7 +144,7 @@ dependencies {
 
     add("embedded", "net.lenni0451:Reflect:1.6.4")
     add("embedded", "de.florianreuth:classic4j:2.3.0")
-    add("embedded", "net.raphimc:MinecraftAuth:5.0.1") {
+    add("embedded", "net.raphimc:MinecraftAuth:5.0.2") {
         exclude(group = "com.google.code.gson", module = "gson")
     }
     add("embedded", "dev.kastle.netty:netty-transport-raknet:1.7.0") {
