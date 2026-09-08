@@ -1,84 +1,131 @@
-# ViaNeoForgePlus 5.x developer API
+# Developer API
 
-Use **Java 25** and a **NeoForge ModDevGradle** project for Minecraft 26.2.
-The API sources in `vianeoforgeplus-api/src/main/java` are compiled into the core JAR; there is no separately published NeoForge API artifact in this port.
+ViaNeoForgePlus exposes events and utility functions so other mods can integrate with it.
+If you want to include it in your project, keep in mind:
 
-## Dependency
+- Use the Java version specified by `project_jvm_version` in [gradle.properties](../gradle.properties)
+- Needs a **NeoForge ModDevGradle** setup (since it's a Minecraft mod, not a standalone API library)
 
-Publish the core first with `./gradlew publishToMavenLocal`. Then in your addon:
+## Adding as a Dependency
 
-~~~kotlin
+Use the `vianeoforgeplus` artifact, which includes the **public API**.
+Run `./gradlew publishToMavenLocal` in the ViaNeoForgePlus repository, then add it to your project:
+
+### Kotlin (Gradle)
+
+```kotlin
 repositories {
-    mavenLocal { content { includeModule("com.viaversion", "vianeoforgeplus") } }
+    mavenLocal()
 }
+
 dependencies {
-    compileOnly("com.viaversion:vianeoforgeplus:5.0.1") { isTransitive = false }
+    // Replace it with the release you published
+    runtimeOnly("com.viaversion:vianeoforgeplus:x.x.x") {
+        isTransitive = false
+    }
+    compileOnly("com.viaversion:vianeoforgeplus:x.x.x") {
+        isTransitive = false
+    }
 }
-~~~
+```
 
-Install the core JAR alongside your addon for runtime. Do not embed it or a second copy of its ViaVersion libraries.
+### Groovy (Gradle)
+
+```groovy
+repositories {
+    mavenLocal()
+}
+
+dependencies {
+    // Replace it with the release you published
+    runtimeOnly("com.viaversion:vianeoforgeplus:x.x.x") {
+        transitive = false
+    }
+    compileOnly("com.viaversion:vianeoforgeplus:x.x.x") {
+        transitive = false
+    }
+}
+```
+
 Declare a client-side required dependency on `vianeoforgeplus` in `META-INF/neoforge.mods.toml`.
-Public Maven hosting of the NeoForge artifacts must be arranged separately; `repo.viaversion.com` hosts upstream Fabric artifacts, not this unpublished port.
+Users need to install ViaNeoForgePlus alongside your mod; do not bundle it inside your own JAR.
 
-## API surface
+## Using the API
 
-~~~java
+Everything is reached through a single entry point:
+
+```java
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.api.ViaFabricPlusAPI;
 
-ViaFabricPlusAPI api = ViaFabricPlus.api();
-api.addChangeProtocolVersionListener((oldVersion, newVersion) -> {
-    // React to a target-version change.
+final ViaFabricPlusAPI api = ViaFabricPlus.api();
+```
+
+`ViaFabricPlusAPI` is the only stable API surface other mods should use. Next to the mod's own metadata it hands
+out four sub-APIs:
+
+- `protocolTranslation()` – the target version, per-connection versions, ViaVersion's `UserConnection` and a
+  listener for version changes
+- `conversions()` – translating items between Minecraft and ViaVersion, and dummy user connections
+- `limitations()` – whether an item, enchantment, effect or banner pattern exists in a given version
+- `screens()` – opening the mod's own screens
+
+`apiVersion()` is incremented on every meaningful API change, so you can check what you're running against.
+
+```java
+ViaFabricPlus.api().addChangeProtocolVersionListener((oldVersion, newVersion) -> {
+    // Called whenever the target protocol version changes
 });
-~~~
+```
 
-`ViaFabricPlusAPI` (API version **7**) exposes metadata, settings, `protocolTranslation()`, `conversions()`, `limitations()` and `screens()`.
-The upstream Java namespace is deliberately retained. Prefer this API to `ViaFabricPlusImpl` internals.
-`ViaFabricPlus.getImpl()` / `ViaFabricPlusBase` are deprecated adapters; many 4.x event/settings types were replaced in upstream 5.x.
-Migrate listeners and settings explicitly instead of relying on old Fabric lifecycle registration.
+> `ViaFabricPlus.getImpl()` and `ViaFabricPlusBase` are deprecated for removal. Use `ViaFabricPlus.api()` and
+> `ViaFabricPlusAPI` instead.
 
-## NeoForge lifecycle entrypoint
+## Entrypoint
 
-Implement `com.viaversion.viafabricplus.api.entrypoint.ViaFabricPlusEntrypoint` in a public no-argument class.
-Add a UTF-8 service descriptor:
+Since your mod may load **after** ViaNeoForgePlus, hook into the loading cycle with a `ViaFabricPlusEntrypoint`.
+Implement it in a public class with a public no-argument constructor:
 
-~~~text
-META-INF/services/com.viaversion.viafabricplus.api.entrypoint.ViaFabricPlusEntrypoint
-~~~
+```java
+package com.example;
 
-Its contents are the fully qualified provider name, for example:
+import com.viaversion.viafabricplus.api.entrypoint.ViaFabricPlusEntrypoint;
 
-~~~text
+public class ExampleEntrypoint implements ViaFabricPlusEntrypoint {
+}
+```
+
+Create `src/main/resources/META-INF/services/com.viaversion.viafabricplus.api.entrypoint.ViaFabricPlusEntrypoint`
+and add the class name:
+
+```text
 com.example.ExampleEntrypoint
-~~~
+```
 
-This uses **ServiceLoader on NeoForge's transforming classloader**, not `fabric.mod.json`.
-Retain a normal `@Mod` discovery class and NeoForge metadata. Do not instantiate the service provider a second time from that class.
-The core provider is first; all providers are discovered before settings callbacks begin.
+All of its methods are optional. Keep your usual NeoForge `@Mod` class; ViaNeoForgePlus creates the service provider
+for you, so do not instantiate it again there.
 
-- `onPreLoading`: API/bootstrap before Minecraft registry bootstrap. Do not use Minecraft client instances or `ModList.get()` here.
-- `onPreSettingsLoading` / `onPostSettingsLoading`: register your settings before persisted values are read.
-- `onPostRegistryLoading`: after NeoForge registry creation/freeze; custom registries must use NeoForge `DeferredRegister` on the mod bus, not this callback.
-- `onPostProtocolTranslationLoading`: protocol worker thread, after the Java stack loads; register protocol providers here, without UI access.
-- `onPostGameLoading`: after client construction; protocol loading has been joined by the core before addon post-game callbacks.
+Use `onPostGameLoading()` for client UI setup. The protocol-loading callback runs on a worker thread.
+See [ViaFabricPlusEntrypoint](../vianeoforgeplus-api/src/main/java/com/viaversion/viafabricplus/api/entrypoint/ViaFabricPlusEntrypoint.java)
+for the available callbacks.
 
-Use the independent Bedrock addon as a working integration example.
+## Custom Settings
 
-## Custom settings
+`api.settings()` gives access to the mod's own groups and lets you register your own, which then show up as their
+own tab in the settings screen. Register them in `onPreSettingsLoading()`, before saved settings are read:
 
-~~~java
+```java
 @Override
 public void onPreSettingsLoading() {
-    var group = ViaFabricPlus.api().settings().register("example_settings.example");
-    group.registerBoolean("enabled", true);
+    final SettingGroup group = ViaFabricPlus.api().settings().register("example_settings.example");
+
+    final BooleanSetting enabled = group.registerBoolean("enabled", true);
+    final VersionedBooleanSetting legacyOnly = group.registerVersionedBoolean("legacy_only", andOlder(v1_12_2), false);
 }
-~~~
+```
 
-Provide translation keys `example_settings.example` and `example_settings.example.enabled`.
-Versioned settings expose `isActive()`, which considers both their value and target-version range.
+The group and its settings are named by translation keys, so the example above needs `example_settings.example`,
+`example_settings.example.enabled` and `example_settings.example.legacy_only` in your language files.
 
-## Packaging
-
-Protocol libraries targeted by Mixins must be in the transforming mod output, not NeoForge's ordinary library-layer Jar-in-Jar dependencies.
-Never bundle Minecraft-provided packages or packages already owned by the core. The addon `verifyDistribution` task checks split packages and lifecycle/native resources.
-An upstream Fabric JAR cannot be used as the runtime dependency of a NeoForge addon.
+A `VersionedBooleanSetting` displays its version range in the screen, and its `isActive()` only returns `true`
+when the setting is enabled and the target version is inside that range.

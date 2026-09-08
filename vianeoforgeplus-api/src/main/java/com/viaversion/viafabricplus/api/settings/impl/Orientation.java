@@ -30,9 +30,9 @@ public enum Orientation implements EnumSetting.EnumValue {
     NONE((_, _, _) -> {
     }),
     LEFT_TOP((button, _, _) -> button.setPosition(5, 5)),
-    RIGHT_TOP((button, width, _) -> button.setPosition(width - 98 - 5, 5)),
-    LEFT_BOTTOM((button, _, height) -> button.setPosition(5, height - 20 - 5)),
-    RIGHT_BOTTOM((button, width, height) -> button.setPosition(width - 98 - 5, height - 20 - 5));
+    RIGHT_TOP((button, width, _) -> button.setPosition(width - button.getWidth() - 5, 5)),
+    LEFT_BOTTOM((button, _, height) -> button.setPosition(5, height - button.getHeight() - 5)),
+    RIGHT_BOTTOM((button, width, height) -> button.setPosition(width - button.getWidth() - 5, height - button.getHeight() - 5));
 
     final Component component;
     final Positioner positioner;
