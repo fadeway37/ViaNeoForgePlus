@@ -1,112 +1,74 @@
-<!--suppress HtmlDeprecatedAttribute -->
-<div align="center">
-  <img src="src/main/resources/assets/viafabricplus/icon.png" width="150" alt="ViaNeoForgePlus logo">
-  <h1>ViaNeoForgePlus</h1>
-  <a href="https://neoforged.net/"><img src="https://img.shields.io/badge/Mod%20Loader-NeoForge-orange" alt="Mod Loader: NeoForge"></a>
-  <img src="https://img.shields.io/badge/Environment-Client-purple" alt="Environment: Client">
-  <a href="https://github.com/ViaVersion/ViaFabricPlus"><img src="https://img.shields.io/badge/Upstream-ViaFabricPlus-2f80ed" alt="Upstream: ViaFabricPlus"></a>
-  <a href="https://discord.gg/viaversion"><img src="https://img.shields.io/discord/316206679014244363?color=0098DB&label=Discord&logo=discord&logoColor=0098DB" alt="ViaVersion Discord"></a><br/>
-  <a href="https://github.com/fadeway37/ViaNeoForgePlus/actions/workflows/build.yml"><img src="https://github.com/fadeway37/ViaNeoForgePlus/actions/workflows/build.yml/badge.svg" alt="Build Status"></a>
+# ViaNeoForgePlus
 
-  <p><strong>Minecraft NeoForge mod that allows you to join <em>every</em> Minecraft server version (Classic, Alpha, Beta, Release, April Fools, Bedrock)</strong></p>
-</div>
+Client-side NeoForge port of [ViaVersion/ViaFabricPlus](https://github.com/ViaVersion/ViaFabricPlus).
+The upstream project supplies the protocol fixes, API, visuals and original implementation; this port adapts its loader integration and Minecraft hooks to NeoForge.
 
-> [!IMPORTANT]
-> **ViaNeoForgePlus is derived from [ViaVersion/ViaFabricPlus](https://github.com/ViaVersion/ViaFabricPlus) and adapts
-> that project for NeoForge.** ViaFabricPlus is the original project and the source of the core implementation,
-> features, and documentation on which this port is based.
+## Release 5.0.1
 
-**ViaNeoForgePlus** is a client-side Minecraft mod for [NeoForge](https://neoforged.net/) that builds on
-the [ViaVersion protocol stack](https://github.com/ViaVersion/ViaVersion).
-It lets you connect to servers from almost every Minecraft version while fixing issues that protocol translation alone
-cannot address.
+| Component | Version |
+| --- | --- |
+| ViaNeoForgePlus | **5.0.1** (upstream release 5.0.1) |
+| Minecraft client | **26.2** |
+| NeoForge | **26.2.0.82** (latest 26.2 build verified September 8, 2026) |
+| Java | **25**, 64-bit |
+| Optional ViaNeoForgePlus Bedrock | **1.0.0** (upstream addon version) |
 
-These fixes make older servers feel much closer to how they originally played, with improvements to movement, block and
-entity interactions, graphics, and more. In short, it recreates the classic Minecraft experience on today's client.
+The exact core upstream baseline is `707b0e0b44fe33f78e5a2f89f37eefec861ec660`, not the newer tip of `ver/26.2`.
+The active port branch and release tag are `ver/26.2` and `5.0.1`. Existing older NeoForge history is retained.
+See [ref synchronization](docs/UPSTREAM_REFS.md) for the distinction between tested port releases and archived upstream refs.
 
-## Important to know
+## Install
 
-- Works **only with the newest Minecraft client version**
-- Runs **only on [NeoForge](https://neoforged.net/)**; do not install the Fabric version alongside it
-- **Multiplayer only** – it does not affect singleplayer worlds
-- **Clientside only** – it does not need to be installed on multiplayer servers
-- **No cross-version resource packs** – resource packs from older versions are not supported
-- If you want to play using **older Minecraft clients**, you should use the
-  original [ViaFabric](https://viaversion.com/fabric) instead.
-  For a detailed comparison with ViaFabricPlus, see
-  the [ViaFabric vs ViaFabricPlus section](https://github.com/ViaVersion/ViaFabric?tab=readme-ov-file#differences-with-viafabricplus).
+1. Create a Minecraft **26.2 / NeoForge 26.2.0.82** instance using **Java 25**.
+2. Put `ViaNeoForgePlus-5.0.1.jar` in its `mods` directory.
+3. Open **Multiplayer → ViaNeoForgePlus**, or **Mods → ViaNeoForgePlus → Config**, and select a protocol.
 
-## How to use
+Do not install Fabric Loader, Fabric API, the Fabric ViaFabricPlus JAR, or an older ViaNeoForgePlus JAR alongside this release.
+The core JAR contains the Java-edition protocol stack and the formerly separate visual features.
+**It no longer contains ViaBedrock.**
 
-Place `ViaNeoForgePlus-<version>.jar` in the NeoForge instance's `mods` directory. The distributable is self-contained.
+### Optional Bedrock support
 
-Open Multiplayer and select the **ViaNeoForgePlus** button to choose a target protocol or edit settings. The same
-settings screen is available from NeoForge's mod list. The primary command is `/vianeoforgeplus`; `/viafabricplus` is
-retained as a compatibility alias.
+The independently versioned NeoForge addon lives in the separate sibling repository **vianeoforgeplus-bedrock**.
+Install `vianeoforgeplus-bedrock-1.0.0.jar` alongside the core for the Bedrock protocol, settings, account and Realms screens.
+It ports [florianreuth/viafabricplus-bedrock](https://github.com/florianreuth/viafabricplus-bedrock) 1.0.0; it is not a Fabric addon loaded through a compatibility layer.
+No public NeoForge-addon download or Maven repository is assumed to exist until separately published.
 
-- [Step-by-step installation and usage guide](docs/USAGE.md)
-- Found a bug? Please report it on the [issue tracker](https://github.com/fadeway37/ViaNeoForgePlus/issues)
-- Got questions about the upstream project? Join the [ViaVersion Discord](https://discord.gg/viaversion)
+## Scope
 
-### Supported Client versions
+- Client-only: do not install on a server. The server does not need this mod.
+- Protocol choices cover Classic, Alpha, Beta, release and selected special versions from the upstream stack.
+- Select **Auto Detect (1.7+ servers)** for supported Java servers, or choose the exact target version.
+- Bedrock is optional and experimental, with the limitations of ViaBedrock. The bundled protocol is **Bedrock 1.26.30 (1001)**.
+- This release targets client **26.2 only**. Historical branches are not a promise of current maintenance or tested NeoForge compatibility.
+- Older resource packs and arbitrary modded-server registries are not made cross-version compatible.
+- Server anti-cheat and server rules still apply.
 
-| **Version**                     | **Feature Updates** | **Bug Fixes** |
-|---------------------------------|---------------------|---------------|
-| Minecraft 26.2                  | Yes                 | Yes           |
-| Minecraft 26.1.x                | No                  | Yes           |
-| Minecraft 1.21.11               | No                  | Yes           |
-| Minecraft 1.21.10 *(and older)* | No                  | No            |
+## Build
 
-### Supported Server versions
+Use Java 25 and the checked-in Gradle wrapper; no separate Gradle installation is needed.
 
-- Release (1.0.0–latest supported release*)
-- Beta (b1.0 – b1.8.1)
-- Alpha (a1.0.15 – a1.2.6)
-- Classic (c0.0.15 – c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))
-- April Fools (3D Shareware, 20w14infinite, 25w14craftmine)
-- Combat Snapshots (Combat Test 8c)
-- Bedrock Edition 1.26.30 ([Some features are missing](https://github.com/RaphiMC/ViaBedrock#features))
+~~~powershell
+.\gradlew.bat build
+.\gradlew.bat publishToMavenLocal
+~~~
 
-*[Support for new Mojang releases is usually added within a few days](https://github.com/ViaVersion/ViaVersion#snapshot-support)
+Output: `build/libs/ViaNeoForgePlus-5.0.1.jar`. Maven coordinate: `com.viaversion:vianeoforgeplus:5.0.1` (local publication).
+Build and publish the core before building the independent addon.
+`check` includes distribution/Mixin-entry/dependency-isolation checks; upstream update-data generators are **not** normal regression tests.
 
-## For Developers & Contributors
+- [Usage and 4.x migration](docs/USAGE.md)
+- [Developer API and lifecycle](docs/DEVELOPER_API.md)
+- [Maintenance and release checks](docs/MAINTAINING.md)
+- [5.0.1 test report](docs/TESTING-5.0.1.md)
+- [Contributing](CONTRIBUTING.md)
 
-- [Contribution guide & dev setup](CONTRIBUTING.md)
-- [API docs & integration examples](docs/DEVELOPER_API.md)
+## Compatibility identifiers and credits
 
-Build the project with:
+The NeoForge mod ID, artifact, config directory, logger and primary command use `vianeoforgeplus` / ViaNeoForgePlus.
+Upstream Java packages, translation keys, resource namespaces and persistent identifiers retain `viafabricplus` to avoid needless breakage.
+The 5.x upstream API changes still require integrations to migrate; the old 4.x API is not fully preserved.
 
-```powershell
-.\gradlew.bat clean build
-```
-
-The compiled mod is written to `build/libs/ViaNeoForgePlus-<version>.jar`.
-
-### Compatibility with ViaFabricPlus
-
-The public Java packages, translation keys, resource namespaces, Mixin configuration names, and persistent identifiers
-still use `viafabricplus` where changing them would break existing integrations or saved data. The NeoForge mod ID,
-display name, artifact name, configuration directory, logger, and primary command use `vianeoforgeplus` /
-ViaNeoForgePlus.
-
-## Credits
-
-ViaNeoForgePlus is based on the original
-[ViaVersion/ViaFabricPlus](https://github.com/ViaVersion/ViaFabricPlus) project and retains its contributors' copyright
-notices. Huge thanks to all the upstream
-[ViaFabricPlus contributors](https://github.com/ViaVersion/ViaFabricPlus/graphs/contributors) who made this project
-possible.
-
-[ViaVersion](https://github.com/ViaVersion/ViaVersion),
-[ViaBackwards](https://github.com/ViaVersion/ViaBackwards),
-[ViaAprilFools](https://github.com/ViaVersion/ViaAprilFools),
-[ViaLegacy](https://github.com/RaphiMC/ViaLegacy), and
-[ViaBedrock](https://github.com/RaphiMC/ViaBedrock) provide the protocol implementations used by this port.
-
-This project is licensed under the [GNU General Public License v3.0](LICENSE).
-
-## Disclaimer
-
-We cannot guarantee this mod will be allowed on every server.
-Some servers may treat it as suspicious and flag it with anti-cheat plugins.
-**Use responsibly and at your own risk!**
+Thanks to the original ViaFabricPlus and ViaVersion contributors, ViaBackwards, ViaAprilFools, ViaLegacy, and the optional ViaBedrock/MinecraftAuth projects.
+Copyright notices and upstream licenses are retained. Licensed under [GPL-3.0-or-later](LICENSE).
+Report port-specific issues to [ViaNeoForgePlus](https://github.com/fadeway37/ViaNeoForgePlus/issues).

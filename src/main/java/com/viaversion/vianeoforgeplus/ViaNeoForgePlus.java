@@ -6,9 +6,8 @@
 
 package com.viaversion.vianeoforgeplus;
 
-import com.viaversion.viafabricplus.features.world.footstep_particle.FootStepParticle1_12_2;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
-import com.viaversion.viafabricplus.screen.impl.SettingsScreen;
+import com.viaversion.viafabricplus.features.v1_12_2.FootStepParticle1_12_2;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.util.network.DataCustomPayload;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.api.distmarker.Dist;
@@ -27,11 +26,10 @@ public final class ViaNeoForgePlus {
     public static final String MOD_ID = "vianeoforgeplus";
 
     public ViaNeoForgePlus(final IEventBus modBus, final ModContainer modContainer) {
-        final IConfigScreenFactory configScreenFactory = (container, parent) -> SettingsScreen.INSTANCE.get(parent);
+        final IConfigScreenFactory configScreenFactory = (container, parent) -> ViaFabricPlusImpl.impl().screens().viaFabricPlusScreen().get(parent);
         modContainer.registerExtensionPoint(IConfigScreenFactory.class, configScreenFactory);
         FootStepParticle1_12_2.register(modBus);
         modBus.addListener(DataCustomPayload::registerPayloads);
-        ProtocolTranslator.registerEvents();
     }
 
 }

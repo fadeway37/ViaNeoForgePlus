@@ -27,12 +27,12 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import net.lenni0451.reflect.ClassLoaders;
-import net.lenni0451.reflect.stream.RStream;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Allows the user to override the Via* jar files with custom ones using the "jars" folder in the run directory
+ * Detects legacy Fabric-style library overrides. NeoForge's transforming module
+ * graph is immutable by the time the client entrypoint runs; overrides must be
+ * supplied by rebuilding the embedded dependencies, not by mutating a loader.
  */
 public final class ClassLoaderPriorityUtil {
 
@@ -63,22 +63,7 @@ public final class ClassLoaderPriorityUtil {
                 return;
             }
 
-            final ClassLoader oldLoader = Thread.currentThread().getContextClassLoader();
-            try {
-                final ClassLoader actualLoader = RStream.of(oldLoader).fields().by("urlLoader").get();
-                Thread.currentThread().setContextClassLoader(actualLoader);
-
-                logger.warn("================================");
-                logger.warn("OVERRIDING JARS LOADING! THIS CAN CAUSE UNEXPECTED BEHAVIOR AND ISSUES!");
-                for (File file : jarFiles) {
-                    ClassLoaders.loadToFront(file.toURI().toURL());
-                    overridingJars.add(file.getName());
-                    logger.warn(" -> {}", file.getName());
-                }
-                logger.warn("================================");
-            } finally {
-                Thread.currentThread().setContextClassLoader(oldLoader);
-            }
+            logger.warn("Ignoring {} library override(s) in {}: NeoForge does not support Fabric-style jars overrides. Update the embedded dependencies and rebuild instead.", jarFiles.length, jars);
         } catch (Throwable e) {
             logger.error("Failed to load overriding jars", e);
         }

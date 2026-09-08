@@ -23,7 +23,6 @@ package com.viaversion.viafabricplus.injection.mixin.core.integration;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.injection.access.core.IServerData;
-import com.viaversion.viafabricplus.save.impl.SettingsSave;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.nbt.CompoundTag;
@@ -60,7 +59,7 @@ public abstract class MixinServerData implements IServerData {
     @Inject(method = "read", at = @At("TAIL"))
     private static void loadForcedVersion(CompoundTag tag, CallbackInfoReturnable<ServerData> cir, @Local(name = "server") ServerData server) {
         if (tag.contains("viafabricplus_forcedversion")) {
-            final ProtocolVersion version = SettingsSave.protocolVersionByName(tag.getStringOr("viafabricplus_forcedversion", null));
+            final ProtocolVersion version = ProtocolVersion.getClosest(tag.getStringOr("viafabricplus_forcedversion", ""));
             if (version != null) {
                 ((IServerData) server).viaFabricPlus$forceVersion(version);
             }

@@ -1,12 +1,12 @@
 modLoader="javafml"
 loaderVersion="[11,)"
-license="GPL-3.0-only"
+license="GPL-3.0-or-later"
 
 [[mods]]
 modId="vianeoforgeplus"
 version="${version}"
 displayName="ViaNeoForgePlus"
-logoFile="assets/viafabricplus/icon.png"
+iconFile="assets/viafabricplus/icon.png"
 authors="Florian Reuth (EnZaXD), RK_01, ViaVersion contributors"
 description='''${description}'''
 displayTest="IGNORE_ALL_VERSION"
@@ -27,9 +27,6 @@ side="CLIENT"
 
 [[mixins]]
 config="viafabricplus.mixins.json"
-
-[[mixins]]
-config="viafabricplus-visuals.mixins.json"
 
 [features.vianeoforgeplus]
 javaVersion="[25,)"
