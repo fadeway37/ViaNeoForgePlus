@@ -19,28 +19,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.v1_20_5.item;
+package com.viaversion.viafabricplus.injection.mixin.features.v26_2.movement;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.EntityFluidInteraction;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.material.FluidState;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(AxeItem.class)
-public abstract class MixinAxeItem {
+@Mixin(EntityFluidInteraction.class)
+public abstract class MixinEntityFluidInteraction {
 
-    @Shadow
-    private static boolean playerHasBlockingItemUseIntent(UseOnContext context) {
-        return false;
-    }
-
-    @Redirect(method = "useOn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/AxeItem;playerHasBlockingItemUseIntent(Lnet/minecraft/world/item/context/UseOnContext;)Z"))
-    private boolean neverCancelStripAttempt(UseOnContext context) {
-        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_20_5) && playerHasBlockingItemUseIntent(context);
+    @WrapOperation(method = "update(Lnet/minecraft/world/entity/Entity;Ljava/util/function/Predicate;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;getHeightForCamera(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)F"))
+    private float useFluidHeightForEyes(FluidState instance, BlockGetter level, BlockPos pos, Operation<Float> original) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v26_2)) {
+            return instance.getHeight(level, pos);
+        } else {
+            return original.call(instance, level, pos);
+        }
     }
 
 }

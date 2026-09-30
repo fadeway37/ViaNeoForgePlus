@@ -19,12 +19,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.access.v1_12_2;
+package com.viaversion.viafabricplus.injection.mixin.features.v26_2.entity;
 
-import java.util.Queue;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.client.player.LocalPlayer;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
 
-public interface IMouseKeyboardHandlers {
+@Mixin(LocalPlayer.class)
+public abstract class MixinLocalPlayer {
 
-    Queue<Runnable> viaFabricPlus$getPendingScreenEvents();
+    @ModifyExpressionValue(method = "aiStep", at = @At(value = "INVOKE", ordinal = 1, target = "Lnet/minecraft/client/player/LocalPlayer;isPassenger()Z"))
+    private boolean moveOutOfBlocksWhileRiding(boolean original) {
+        // 26.3 no longer pushes the player out of blocks while riding
+        return ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v26_3) && original;
+    }
 
 }

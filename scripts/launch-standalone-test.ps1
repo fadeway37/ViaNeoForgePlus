@@ -2,10 +2,10 @@
 # Uses an offline test identity; never reads launcher accounts.
 [CmdletBinding()]
 param(
-    [string]$InstalledClient = (Join-Path $PSScriptRoot '../../vianeoforgeplus-test-26.2-26.2.0.82/standalone'),
+    [string]$InstalledClient = (Join-Path $PSScriptRoot '../../vianeoforgeplus-test-26.3-26.3.0.38-beta/standalone'),
     [string]$JavaHome = $env:JAVA_HOME,
     [ValidateSet('core', 'bedrock')][string]$Profile = 'core',
-    [string]$CoreJar = (Join-Path $PSScriptRoot '../build/libs/ViaNeoForgePlus-5.0.1.jar'),
+    [string]$CoreJar = (Join-Path $PSScriptRoot '../build/libs/ViaNeoForgePlus-5.1.1.jar'),
     [string]$BedrockJar = (Join-Path $PSScriptRoot '../../vianeoforgeplus-bedrock/build/libs/vianeoforgeplus-bedrock-1.0.0.jar'),
     [string]$AssetCache = '',
     [string]$LibraryCache = '',
@@ -23,10 +23,10 @@ if ($Server -and $Server -notmatch '^127\.0\.0\.1:\d{1,5}$') {
     throw 'This offline regression launcher only accepts a loopback test server.'
 }
 $clientRoot = (Resolve-Path -LiteralPath $InstalledClient).Path
-$vanilla = Get-Content -LiteralPath (Join-Path $clientRoot 'versions/26.2/26.2.json') -Raw | ConvertFrom-Json -AsHashtable
-$neo = Get-Content -LiteralPath (Join-Path $clientRoot 'versions/neoforge-26.2.0.82/neoforge-26.2.0.82.json') -Raw | ConvertFrom-Json -AsHashtable
-if ($vanilla.id -ne '26.2' -or $neo.id -ne 'neoforge-26.2.0.82' -or $neo.inheritsFrom -ne $vanilla.id) {
-    throw 'Expected the official Minecraft 26.2 / NeoForge 26.2.0.82 installation.'
+$vanilla = Get-Content -LiteralPath (Join-Path $clientRoot 'versions/26.3/26.3.json') -Raw | ConvertFrom-Json -AsHashtable
+$neo = Get-Content -LiteralPath (Join-Path $clientRoot 'versions/neoforge-26.3.0.38-beta/neoforge-26.3.0.38-beta.json') -Raw | ConvertFrom-Json -AsHashtable
+if ($vanilla.id -ne '26.3' -or $neo.id -ne 'neoforge-26.3.0.38-beta' -or $neo.inheritsFrom -ne $vanilla.id) {
+    throw 'Expected the official Minecraft 26.3 / NeoForge 26.3.0.38-beta installation.'
 }
 $gameDir = Join-Path $clientRoot "instances/$Profile"
 $assetsDir = Join-Path $clientRoot 'assets'
@@ -95,7 +95,7 @@ foreach ($lib in $libraries.Values) {
     Receive-VerifiedFile $artifact.url $destination $artifact.sha1 $cached
     $classPath.Add($destination)
 }
-$clientJar = Join-Path $clientRoot 'versions/26.2/26.2.jar'
+$clientJar = Join-Path $clientRoot 'versions/26.3/26.3.jar'
 Receive-VerifiedFile $vanilla.downloads.client.url $clientJar $vanilla.downloads.client.sha1
 $classPath.Add($clientJar)
 $assetIndexFile = Join-Path $assetsDir "indexes/$($vanilla.assetIndex.id).json"
@@ -111,7 +111,7 @@ foreach ($object in $objects) {
 Write-Host "Verified $($classPath.Count) classpath artifacts and $($objects.Count) asset objects."
 
 # Copy only the requested artifacts. Never sync/delete a user's mods.
-Copy-Item -LiteralPath $CoreJar -Destination (Join-Path $gameDir 'mods/ViaNeoForgePlus-5.0.1.jar')
+Copy-Item -LiteralPath $CoreJar -Destination (Join-Path $gameDir 'mods/ViaNeoForgePlus-5.1.1.jar')
 if ($Profile -eq 'bedrock') {
     Copy-Item -LiteralPath $BedrockJar -Destination (Join-Path $gameDir 'mods/vianeoforgeplus-bedrock-1.0.0.jar')
 }
@@ -120,7 +120,7 @@ $substitutions = @{
     clientid = '0'; auth_xuid = '0'; version_name = $neo.id; version_type = 'release'
     game_directory = $gameDir; assets_root = $assetsDir; assets_index_name = $vanilla.assetIndex.id
     natives_directory = $nativeDir; library_directory = $libraryDir; classpath = ($classPath -join ';')
-    launcher_name = 'ViaNeoForgePlus-Regression'; launcher_version = '5.0.1'
+    launcher_name = 'ViaNeoForgePlus-Regression'; launcher_version = '5.1.1'
 }
 function Expand-Arguments($Entries) {
     foreach ($entry in $Entries) {
@@ -145,7 +145,7 @@ if ($Server) { $launchArgs += @('--quickPlayMultiplayer', $Server) }
 $argFile = Join-Path $gameDir 'launch.args'
 $escapedArgs = $launchArgs | ForEach-Object { '"' + $_.Replace('\', '\\').Replace('"', '\"') + '"' }
 [IO.File]::WriteAllLines($argFile, $escapedArgs, [Text.UTF8Encoding]::new($false))
-Write-Host "Ready: $gameDir (Minecraft 26.2 / NeoForge 26.2.0.82 / $Profile)"
+Write-Host "Ready: $gameDir (Minecraft 26.3 / NeoForge 26.3.0.38-beta / $Profile)"
 if ($PrepareOnly) { return }
 Push-Location $gameDir
 try {

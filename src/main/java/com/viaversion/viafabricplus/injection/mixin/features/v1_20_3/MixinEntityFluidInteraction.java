@@ -32,7 +32,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(EntityFluidInteraction.class)
 public abstract class MixinEntityFluidInteraction {
 
-    @Redirect(method = "update(Lnet/minecraft/world/entity/Entity;Ljava/util/function/Predicate;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;getEyeY()D"))
+    @Redirect(method = "update(Lnet/minecraft/world/entity/Entity;Ljava/util/function/Predicate;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;getEyeY()D"))
     private double subtractMagicOffset(Entity instance) {
         if (ViaFabricPlus.api().targetVersion().betweenInclusive(ProtocolVersion.v1_16, ProtocolVersion.v1_20_3)) {
             return instance.getEyeY() - 0.11111111F;

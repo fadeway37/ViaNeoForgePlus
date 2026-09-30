@@ -21,13 +21,15 @@
 
 package com.viaversion.viafabricplus.features.v1_19_1;
 
+import com.mojang.authlib.HttpDiscoveryService;
 import com.mojang.authlib.minecraft.UserApiService;
+import com.mojang.authlib.services.MinecraftServicesDiscoveryService;
+import com.mojang.authlib.services.response.discovery.Service;
 import com.mojang.authlib.minecraft.client.MinecraftClient;
-import com.mojang.authlib.yggdrasil.YggdrasilUserApiService;
-import com.mojang.authlib.yggdrasil.response.KeyPairResponse;
+import com.mojang.authlib.services.MinecraftServicesUserApiService;
+import com.mojang.authlib.services.response.KeyPairResponse;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import java.lang.reflect.Field;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.Map;
@@ -41,19 +43,19 @@ public final class LegacyKeyPairResponse {
     }
 
     public static KeyPairResponse fetch(final UserApiService userApiService) {
-        if (!(userApiService instanceof YggdrasilUserApiService yggdrasilService)) {
+        if (!(userApiService instanceof MinecraftServicesUserApiService servicesApi)) {
             return userApiService.getKeyPair();
         }
 
         try {
-            final Field minecraftClientField = YggdrasilUserApiService.class.getDeclaredField("minecraftClient");
-            final Field routeKeyPairField = YggdrasilUserApiService.class.getDeclaredField("routeKeyPair");
+            final Field minecraftClientField = MinecraftServicesUserApiService.class.getDeclaredField("minecraftClient");
+            final Field discoveryServiceField = MinecraftServicesUserApiService.class.getDeclaredField("discoveryService");
             minecraftClientField.setAccessible(true);
-            routeKeyPairField.setAccessible(true);
+            discoveryServiceField.setAccessible(true);
 
-            final MinecraftClient minecraftClient = (MinecraftClient) minecraftClientField.get(yggdrasilService);
-            final URL routeKeyPair = (URL) routeKeyPairField.get(yggdrasilService);
-            final KeyPairResponse1_19_0 response = minecraftClient.post(routeKeyPair, KeyPairResponse1_19_0.class);
+            final MinecraftClient minecraftClient = (MinecraftClient) minecraftClientField.get(servicesApi);
+            final MinecraftServicesDiscoveryService discoveryService = (MinecraftServicesDiscoveryService) discoveryServiceField.get(servicesApi);
+            final KeyPairResponse1_19_0 response = minecraftClient.post(HttpDiscoveryService.constantURL(discoveryService.getUrl(Service.PLAYER, "getCertificates")), KeyPairResponse1_19_0.class);
             if (response == null) {
                 return null;
             }

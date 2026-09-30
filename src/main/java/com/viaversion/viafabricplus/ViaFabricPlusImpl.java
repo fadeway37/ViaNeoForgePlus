@@ -52,7 +52,7 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusAPI, ViaFabricPlusE
     private final SettingsImpl settings = new SettingsImpl();
     private final ProtocolTranslationImpl protocolTranslation = new ProtocolTranslationImpl();
     private final ConversionsImpl conversions = new ConversionsImpl();
-    private LimitationsImpl limitations;
+    private final LimitationsImpl limitations = new LimitationsImpl();
     private ScreensImpl screens;
 
     private final String version;
@@ -94,7 +94,7 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusAPI, ViaFabricPlusE
 
     @Override
     public void onPostGameLoading() {
-        this.limitations = new LimitationsImpl();
+        this.limitations.init();
         this.screens = new ScreensImpl();
 
         FeaturesLoading.onPostGameLoading();

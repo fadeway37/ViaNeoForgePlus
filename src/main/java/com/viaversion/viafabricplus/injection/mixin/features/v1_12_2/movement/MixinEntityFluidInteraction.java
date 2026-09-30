@@ -41,7 +41,7 @@ public abstract class MixinEntityFluidInteraction {
     @Definition(id = "box", local = @Local(type = AABB.class, name = "box"))
     @Definition(id = "minY", field = "Lnet/minecraft/world/phys/AABB;minY:D")
     @Expression("fluidTop < box.minY")
-    @ModifyExpressionValue(method = "update(Lnet/minecraft/world/entity/Entity;Ljava/util/function/Predicate;)V", at = @At("MIXINEXTRAS:EXPRESSION"))
+    @ModifyExpressionValue(method = "update(Lnet/minecraft/world/entity/Entity;Ljava/util/function/Predicate;)Z", at = @At("MIXINEXTRAS:EXPRESSION"))
     private boolean removeConditional(boolean original) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) ) {
             return false; // Equates to true due to the negation in the original code
@@ -50,7 +50,7 @@ public abstract class MixinEntityFluidInteraction {
         }
     }
 
-    @Redirect(method = "update(Lnet/minecraft/world/entity/Entity;Ljava/util/function/Predicate;)V", at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(DD)D"))
+    @Redirect(method = "update(Lnet/minecraft/world/entity/Entity;Ljava/util/function/Predicate;)Z", at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(DD)D"))
     private double adjustHeightCalculation(double a, double b) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             return Math.max(a + 0.4, b);
@@ -59,7 +59,7 @@ public abstract class MixinEntityFluidInteraction {
         }
     }
 
-    @Redirect(method = "update(Lnet/minecraft/world/entity/Entity;Ljava/util/function/Predicate;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;scale(D)Lnet/minecraft/world/phys/Vec3;"))
+    @Redirect(method = "update(Lnet/minecraft/world/entity/Entity;Ljava/util/function/Predicate;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;scale(D)Lnet/minecraft/world/phys/Vec3;"))
     private Vec3 dontScaleCurrent(Vec3 instance, double scale) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             return instance;

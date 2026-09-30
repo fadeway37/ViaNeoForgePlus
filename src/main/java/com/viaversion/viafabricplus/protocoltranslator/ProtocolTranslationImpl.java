@@ -34,7 +34,6 @@ import com.viaversion.viafabricplus.protocoltranslator.impl.platform.ViaFabricPl
 import com.viaversion.viafabricplus.protocoltranslator.impl.platform.ViaFabricPlusViaVersionPlatform;
 import com.viaversion.viafabricplus.protocoltranslator.impl.viaversion.ViaFabricPlusPlatformLoader;
 import com.viaversion.viafabricplus.protocoltranslator.protocol.ViaFabricPlusProtocol;
-import com.viaversion.viafabricplus.protocoltranslator.util.ProtocolVersionDetector;
 import com.viaversion.viaversion.ViaManagerImpl;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
@@ -63,7 +62,7 @@ public final class ProtocolTranslationImpl implements ProtocolTranslation {
     public static final AttributeKey<Connection> MINECRAFT_CONNECTION_ATTRIBUTE_KEY = AttributeKey.newInstance("viafabricplus-minecraft-connection");
     public static final AttributeKey<ProtocolVersion> TARGET_VERSION_ATTRIBUTE_KEY = AttributeKey.newInstance("viafabricplus-target-version");
 
-    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v26_2;
+    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v26_3;
 
     private final List<BiConsumer<ProtocolVersion, ProtocolVersion>> changeVersionListeners = new ArrayList<>();
 
@@ -124,6 +123,11 @@ public final class ProtocolTranslationImpl implements ProtocolTranslation {
         return ((IServerData) serverData).viaFabricPlus$forcedVersion();
     }
 
+    @Override
+    public void setServerVersion(final ServerData serverData, final ProtocolVersion version) {
+        ((IServerData) serverData).viaFabricPlus$forceVersion(version);
+    }
+
     public void injectionPreviousVersionHandler(final Channel channel) {
         if (this.previousVersion != null) {
             channel.closeFuture().addListener(_ -> {
@@ -161,7 +165,7 @@ public final class ProtocolTranslationImpl implements ProtocolTranslation {
                     new ViaAprilFoolsPlatformImpl();
                 }
             );
-            ProtocolVersion.register(ProtocolVersionDetector.AUTO_DETECT_VERSION);
+            ProtocolVersion.register(ProtocolTranslation.AUTO_DETECT_VERSION);
             ViaFabricPlusProtocol.INSTANCE.initialize();
         }, Util.backgroundExecutor());
     }

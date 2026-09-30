@@ -31,10 +31,10 @@ import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(EntityFluidInteraction.Tracker.class)
-public abstract class MixinEntityFluidInteraction_Tracker {
+@Mixin(EntityFluidInteraction.CurrentAccumulator.class)
+public abstract class MixinEntityFluidInteraction_CurrentAccumulator {
 
-    @Redirect(method = "applyCurrentTo", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;lengthSqr()D"))
+    @Redirect(method = "applyTo", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;lengthSqr()D"))
     private double useLengthInstead(Vec3 instance) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_11)) {
             return instance.length();
@@ -43,7 +43,7 @@ public abstract class MixinEntityFluidInteraction_Tracker {
         }
     }
 
-    @ModifyConstant(method = "applyCurrentTo", constant = @Constant(doubleValue = (double) 1.0E-5F))
+    @ModifyConstant(method = "applyTo", constant = @Constant(doubleValue = (double) 1.0E-5F))
     private double changeThreshold(double constant) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_11)) {
             return 0;

@@ -4,7 +4,7 @@ import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 plugins {
     `java-library`
     `maven-publish`
-    id("net.neoforged.moddev") version "2.0.141"
+    id("net.neoforged.moddev") version "2.0.148"
 }
 
 group = property("project_group") as String
@@ -90,7 +90,7 @@ val prepareProductionRun = tasks.register<Copy>("prepareProductionRun") {
     into(layout.projectDirectory.dir("run/production/mods"))
 }
 val freshClientDirectory = layout.projectDirectory.dir(
-    providers.gradleProperty("clientDirectory").getOrElse("../vianeoforgeplus-test-26.2-26.2.0.82/core")
+    providers.gradleProperty("clientDirectory").getOrElse("../vianeoforgeplus-test-26.3-26.3.0.38-beta/core")
 )
 val prepareFreshClient = tasks.register<Copy>("prepareFreshClient") {
     dependsOn(tasks.named("jar"))
@@ -145,10 +145,10 @@ neoForge {
 }
 
 dependencies {
-    add("embedded", "com.viaversion:viaversion-common:5.12.0-20260904.185715-7")
-    add("embedded", "com.viaversion:viabackwards-common:5.12.0-20260904.190714-4")
-    add("embedded", "com.viaversion:viaaprilfools-common:4.2.3-20260820.140819-4")
-    add("embedded", "net.raphimc:ViaLegacy:3.1.0-20260830.173114-8")
+    add("embedded", "com.viaversion:viaversion-common:5.12.1-20260927.122410-10")
+    add("embedded", "com.viaversion:viabackwards-common:5.12.1-20260925.130410-7")
+    add("embedded", "com.viaversion:viaaprilfools-common:4.2.3")
+    add("embedded", "net.raphimc:ViaLegacy:3.1.0")
 
     add("embedded", "net.lenni0451:Reflect:1.6.4")
     add("embedded", "de.florianreuth:classic4j:2.3.1")

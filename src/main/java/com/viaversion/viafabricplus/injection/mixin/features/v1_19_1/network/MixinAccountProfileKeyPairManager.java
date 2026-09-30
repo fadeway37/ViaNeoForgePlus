@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.v1_19_1.network;
 
-import com.mojang.authlib.yggdrasil.response.KeyPairResponse;
+import com.mojang.authlib.services.response.KeyPairResponse;
 import com.mojang.authlib.minecraft.UserApiService;
 import com.viaversion.viafabricplus.features.v1_19_1.LegacyKeyPairResponse;
 import com.viaversion.viafabricplus.injection.access.v1_19_1.IProfilePublicKey_Data;
@@ -40,7 +40,7 @@ public abstract class MixinAccountProfileKeyPairManager {
         method = "fetchProfileKeyPair",
         at = @At(
             value = "INVOKE",
-            target = "Lcom/mojang/authlib/minecraft/UserApiService;getKeyPair()Lcom/mojang/authlib/yggdrasil/response/KeyPairResponse;",
+            target = "Lcom/mojang/authlib/minecraft/UserApiService;getKeyPair()Lcom/mojang/authlib/services/response/KeyPairResponse;",
             remap = false
         )
     )
