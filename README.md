@@ -36,7 +36,8 @@ entity interactions, graphics, and more. In short, it recreates the classic Mine
 
 | **Version**                     | **Feature Updates** | **Bug Fixes** |
 | ------------------------------- | ------------------- | ------------- |
-| Minecraft 26.2                  | Yes                 | Yes           |
+| Minecraft 26.3                  | Yes                 | Yes           |
+| Minecraft 26.2                  | No                  | Yes           |
 | Minecraft 26.1.x *(and older)*   | No                  | No            |
 
 ### Supported Server versions
