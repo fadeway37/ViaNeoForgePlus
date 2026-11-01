@@ -153,7 +153,7 @@ dependencies {
     add("embedded", "net.lenni0451:Reflect:1.6.4")
     add("embedded", "de.florianreuth:classic4j:2.3.1")
 
-    testImplementation(platform("org.junit:junit-bom:6.0.3"))
+    testImplementation(platform("org.junit:junit-bom:6.1.3"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
